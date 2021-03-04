@@ -16,3 +16,23 @@ int us_binary_to_int(char *binary)
     }
     return result;
 }
+/* return substring of str, between start (include) and finish (exclude)
+if there was an error it will print the error message and return null */
+char *subString(int start, int end, char *str)
+{
+    /* allocate memory for the result*/
+    char *result = (char *)malloc(sizeof(char) * (end - start));
+    if (!result)
+    {
+        printf("Error: memory allocation failed");
+        return NULL;
+    }
+
+    while (start < end)
+    {
+        result[start] = str[start];
+        start++;
+    }
+    result[end] = '\0';
+    return result;
+}

@@ -12,8 +12,13 @@ void updateInstructions()
     /*update internal*/
 
 }
-/*handling all the instruction*/
-char *handleInstruction(char * tag, char * instruction, char ** params){
+/*adding e instruction (entry or external) the instruction*/
+void addEInstruction(char * param){
+    /* if instruction is data or string add params to code*/
+    /*if instruction is extrnal read params[0] and add it to the tags*/
+    /*if instruction is is internal read params[0] and add it to the internal list*/
+}
+void addAllocationInstruction(int * params, int numberOfparams){
     /* if instruction is data or string add params to code*/
     /*if instruction is extrnal read params[0] and add it to the tags*/
     /*if instruction is is internal read params[0] and add it to the internal list*/

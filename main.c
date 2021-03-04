@@ -1,4 +1,5 @@
 #include "header.h"
+/*open all files and let assembler handle them*/
 int main(int argc, char const *argv[])
 {
     int i;
