@@ -8,6 +8,7 @@
 /*represent word of code*/
 struct wordCommand
 {
+    /*TODO:consider changing the label by creating array of labels and indexes and lines*/
     unsigned int address;
     unsigned int machineCode : 12;
     unsigned int ARE : 3;
@@ -33,7 +34,7 @@ static struct wordCommand commandWords[MEMORY_SIZE];
 
 static int wordsCounter = 0;
 /* add the whole command to the machinecode*/
-void addCommand(char * commandName, char * op1, char * op2, int *error){
+void addCommand(char * commandName, char * param1, char *param2,int lineNum, int *error){
 
 }
 /*update all the commands that wasent completed in iteration 1*/
