@@ -20,7 +20,7 @@ int main(int argc, char const *argv[])
     {
         for (int i = 1; i < argc; i++)
         {
-            FILE *f = fopen(argv[i], "r");
+            FILE *f = fopen(strcat(argv[i],".as"), "r");
             if (!f)
             {
                 printf("Error: could not open file %s.as \n", argv[i]);

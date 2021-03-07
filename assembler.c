@@ -1,4 +1,5 @@
 /*processing file and creating the outputs files*/
+/*TODO: consider renaming to fileReader*/
 #include "header.h"
 #define ERROR 1
 
@@ -10,10 +11,11 @@ void process(FILE *f)
     int lineCounter = 1;
     while (fgets(line, MAX_LINE_LENGTH, f))
     {
-        int current = 0;
+        int current;
         int afterWord;
         char *firstWord;
         char *secondWord;
+        int tempError = 0;
         current = skipTabsAndSpaces(0, line);
         /*if line is comment skip to the next line*/
         if (current == COMMENT_SPECIFIER)
@@ -25,15 +27,11 @@ void process(FILE *f)
         /*if the first word is tag check that is valid and save it as temp*/
         if (firstWord[strlen(firstWord) - 1] == TAG_SPECIFIER)
         {
-            if (!validTag(firstWord))
+            addtempTag(firstWord, lineCounter, &tempError, 1);
+            if (tempError == ERROR)
             {
                 error = ERROR;
-                printf("Error: line %d, tag name is not valid", lineCounter);
                 continue;
-            }
-            else
-            {
-                addTempTag(firstWord);
             }
         }
         /*if the first word is instruction read it and move to the next line*/
@@ -109,15 +107,20 @@ static int readEInstruction(char *line, char *instruction, int afterInstruction,
 {
     char *param;
     int current;
+    int currentError = 0;
+
     /*entry and external should ignore tags*/
     removeTempTag();
     /*extract the paramter of the instruction from the line*/
-    int current = skipTabsAndSpaces(afterInstruction, line);
-
-    param = readWordParam(line, current, currentLine, error, 0);
-    if (!error)
+    current = skipTabsAndSpaces(afterInstruction, line);
+    param = readWordParam(line, current, currentLine, &currentError, 0);
+    if (!currentError)
     {
         addEInstruction(instruction, param, currentLine, error);
+    }
+    else
+    {
+        (*error) = currentError;
     }
 }
 
@@ -126,7 +129,7 @@ static int readEInstruction(char *line, char *instruction, int afterInstruction,
 static void readDataInstruction(char *line, char *instruction, int afterInstruction, int currentLine, int *error)
 {
     int params[MAX_LINE_LENGTH];
-    int i = 0;
+    int numberOfParams = 1;
     char *paramString;
     int paramInt;
     int current = afterInstruction;
@@ -163,9 +166,9 @@ static void readDataInstruction(char *line, char *instruction, int afterInstruct
                 return;
             }
         }
-        params[i] = paramInt;
+        params[numberOfParams] = paramInt;
         current = afterWord;
-        i++;
+        numberOfParams++;
     }
     /*there is an edge case in which the end of the line comes right after the comma in which the loop will not notice that*/
     if (line[current - 1] == ',')
@@ -174,7 +177,7 @@ static void readDataInstruction(char *line, char *instruction, int afterInstruct
         (*error) = ERROR;
         return;
     }
-    addDataInstruction(instruction, params, currentLine, *error);
+    addDataInstruction(instruction, params, numberOfParams, currentLine, *error);
 }
 
 /* read string instruction - calculate the parameters and let instructions handler to handle it, 
@@ -183,15 +186,20 @@ static int readStringInstruction(char *line, char *instruction, int afterInstruc
 {
     char *param;
     int current;
+    int currentError = 0;
     /*making the temporary instruction parmenant becuase it will be used*/
     makeTempTagPermanent(getInstructionsWordsCount(), 1, 0, 0);
 
     /*extract the paramter of the instruction from the line*/
-    int current = skipTabsAndSpaces(afterInstruction, line);
-    param = readWordParam(line, current, currentLine, error, 0);
-    if (!error)
+    current = skipTabsAndSpaces(afterInstruction, line);
+    param = readWordParam(line, current, currentLine, &currentError, 0);
+    if (!currentError)
     {
         addEInstruction(instruction, param, currentLine, error);
+    }
+    else
+    {
+        (*error) = currentError;
     }
 }
 /*read command - divide it to words and let command handler to handle it */
@@ -200,17 +208,26 @@ static void readCommand(char *line, char *command, int afterCommand, int current
     char *param1;
     char *param2;
     int current;
+    int currentError = 0;
     /*making the temporary instruction parmenant becuase it will be used*/
     makeTempTagPermanent(getInstructionsWordsCount(), 0, 0, 0);
-    int current = skipTabsAndSpaces(afterCommand, line);
-    param1 = readWordParam(line, current, currentLine, error, 0);
-    if (!error)
+    current = skipTabsAndSpaces(afterCommand, line);
+    param1 = readWordParam(line, current, currentLine, currentError, 0);
+    if (!currentError)
     {
-        param2 = readWordParam(line, current, currentLine, error, 1);
-        if (!error)
+        param2 = readWordParam(line, current, currentLine, currentError, 1);
+        if (!currentError)
         {
             addCommand(command, param1, param2, currentLine, error);
         }
+        else
+        {
+            *error = currentError;
+        }
+    }
+    else
+    {
+        *error = currentError;
     }
 }
 

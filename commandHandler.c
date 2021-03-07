@@ -32,7 +32,7 @@ static struct command comList[NUMBER_OF_COMMANDS];
 /*the commands in the memory*/
 static struct wordCommand commandWords[MEMORY_SIZE];
 
-static int wordsCounter = 0;
+static int commandWordsCounter = 0;
 /* add the whole command to the machinecode*/
 void addCommand(char * commandName, char * param1, char *param2,int lineNum, int *error){
 
