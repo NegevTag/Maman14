@@ -9,10 +9,13 @@
 #define COMMENT_SPECIFIER ';'
 #define TAG_SPECIFIER ':'
 #define INSTRUCTION_SPECIFIER '.'
+#define STRING_SPECIFIER "\""
+#define IMMEDIATE_SPECIFIER '#'
+#define RELATIVE_SPECIFIER '%'
 /*2^11 - 1*/
 #define MAX_NUMBER 2047
 /*-2^11*/
 #define MIN_NUMBER 2048
-#define STRING_SPECIFIER "\""
+#define MAX_REGISTER 7
 /*transferring unsigned binary number shown as string to int*/
 int us_binary_to_int(char * binary);
