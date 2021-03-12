@@ -1,4 +1,4 @@
-/*data structare for the words that represent commands in the machineCode*/
+/*represent the words that represent commands in the machineCode*/
 /*not responsible for printing error messeges if accures*/
 #include "header.h"
 #include "commandsHeader.h"

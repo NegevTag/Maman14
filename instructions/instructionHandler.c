@@ -1,28 +1,7 @@
 /*handling all the instructions (hanchiot)*/
 #include "header.h"
 
-/*TODO: consider split to two files*/
-struct wordInstruction
-{
-    /*TODO: explain ARE*/
-    /*TODO:consider changing the label by creating array of labels and indexes and lines*/
-    unsigned int address;
-    unsigned int machineCode : 12;
-    unsigned int ARE : 3;
-};
 
-static struct wordInstruction instructionWords[MEMORY_SIZE];
-static int instructionWordsCounter = 0;
-static struct entry
-{
-    char *label;
-    int lineNum;
-};
-
-/*TODO: make al files more readable (statics done, struct up, functions up)*/
-static struct entry(*entryList);
-
-static int entryIndex = 0;
 /* get all the words in the output format*/
 char *getinstructionsWordsList()
 {
@@ -129,30 +108,8 @@ void addStringInstruction(char *instruction, char *param, int lineNumber, int *e
 /*adding word that represent number*/
 static void addWordNumber(int num)
 {
-    addWord( num, us_binary_to_int("100"));
+    addWord(num, us_binary_to_int("100"));
 }
-/*adding word by adress and machineCode and ARE*/
-static void addWord(int machineCode, int ARE)
-{
-    instructionWords[instructionWordsCounter].address = instructionWordsCounter;
-    instructionWords[instructionWordsCounter].machineCode = machineCode;
-    instructionWords[instructionWordsCounter].ARE = ARE;
-    instructionWordsCounter++;
-}
-/*initialize the instruction*/
-void initializeInstruction()
-{
-    entryList = (struct entry *)(myMalloc(sizeof(struct entry)));
-}
+
 /*TODO: rename all lines to line numbers*/
-/*add entry to the entry list*/
-static void addEntry(char *label,int lineNumber)
-{
-    /*allocate new memory for the entryList*/
-    entryList = (struct entry *)myRealloc(entryList, (entryIndex + 2) * sizeof(struct entry));
-    /*add entry to the list*/
-    entryList[entryIndex].lineNum = lineNumber;
-    /*there is no need to allocate memory for the string because substring allocate memory*/
-    entryList[entryIndex].label = label;
-    entryIndex++;
-}
+

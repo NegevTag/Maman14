@@ -54,9 +54,6 @@ void getcommandWordsList(char *as, char *ext)
 {
 }
 
-
-
-
 /*handle the parameter(add the appropriate word to the command word list, print error if accrued) 
 commandWordAddress is the address of theword that represent the command which this is the parameter for it */
 static void handleParam(int isInputParam, char *param, int commandWordAddress, int possibleAddressing, int lineNum, int *error)
