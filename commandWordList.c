@@ -1,5 +1,7 @@
 /*data structare for the words that represent commands in the machineCode*/
+/*not responsible for printing error messeges if accures*/
 #include "header.h"
+#include "commandsHeader.h"
 /*represent word of code*/
 struct wordCommand
 {
@@ -11,26 +13,51 @@ struct wordCommand
 
 static int commandWordsCounter = 0;
 
-/*the commands in the memory*/
 static struct wordCommand commandWordList[MEMORY_SIZE];
-/*add command word to the command word list, return ERROR if error occurred*/
-int addCommandWord(int machineCode, int ARE)
+/*add command word to the command word list, change error to ERROR if error occurred*/
+void addCW(int machineCode, int ARE, int *error)
 {
     if (commandWordsCounter >= MEMORY_SIZE)
     {
-        return ERROR;
+        (*error) = ERROR;
+        return;
     }
     commandWordList[commandWordsCounter].address = FIRST_ADDRESS + commandWordsCounter;
     commandWordList[commandWordsCounter].machineCode = machineCode;
     commandWordList[commandWordsCounter].ARE = ARE;
     commandWordsCounter++;
-    return 0;
 }
 /*return the number of commandwords*/
-int getNumberOfCommandWords(){
+int getNumberOfCW()
+{
     return commandWordsCounter;
 }
-/*get the address of the next command*/
-int getNextcommandWordAddress(){
+/*get the address of the next command word*/
+int getNextCWAddress()
+{
     return commandWordsCounter + FIRST_ADDRESS;
+}
+/*set the machine code of the command word in specified address, if not found return ERROR else return 1*/
+int setCWMachineCode(int address, int machineCode)
+{
+    if (!isValidAddress(address))
+    {
+        return ERROR;
+    }
+    commandWordList[address - FIRST_ADDRESS].machineCode = machineCode;
+    return 1;
+}
+/*get the machine code of the command word in specified address, if not found return ERROR*/
+int getCWMachineCode(int address)
+{
+    if (!isValidAddress(address))
+    {
+        return ERROR;
+    }
+    return commandWordList[address - FIRST_ADDRESS].machineCode;
+}
+/*check if adress is valid*/
+static int isValidAddress(int address)
+{
+    return address >= FIRST_ADDRESS && address < commandWordsCounter + FIRST_ADDRESS;
 }

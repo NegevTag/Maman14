@@ -1,4 +1,5 @@
 /*the list of the diffrent commands (mov,cmp,add, etc) and basic information about them*/
+/*not responsible for printing error messeges if accures*/
 #include "header.h"
 #include "commandsHeader.h"
 #define ONE_OR_THREE (2 + 8)
@@ -107,17 +108,18 @@ void initializeCommands()
     comList[15].possibleInAddressing = NONE;  /*none*/
     comList[15].possibleOutAddressing = NONE; /*none*/
 }
-/*get the command by it name, if command no exits change error to ERROR and return some random command*/
-struct command getCommandIndex(char *commandName, int *error)
+/*get the command by it name, if command not exist (*exist) wil be zero, else it will be 1*/
+struct command getCommand(char *commandName, int *exist)
 {
     int i = 0;
     for (i = 0; i < NUMBER_OF_COMMANDS; i++)
     {
         if (strcmp(comList[i].name, commandName) == 0)
         {
+            (*exist) = 1;
             return comList[i];
         }
     }
-    (*error) = ERROR;
+    (*exist) = 0;
     return comList[0];
 }

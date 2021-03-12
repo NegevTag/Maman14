@@ -1,9 +1,10 @@
 /*represent the list of the paramter for commands that are labels*/
-/*represent label that is parameter of command*/
+/*not responsible for printing error message if occures*/
+
 struct labelParams
 {
     char *name;    /*the name of the label*/
-    int codeAdress; /*the place it was shown in the code*/
+    int codeAddress; /*the place it was shown in the code*/
     int direct;    /*is it direct addressing(0 if it relative)*/
     int lineNum;   /*the number of the line it is appeared in*/
 };
@@ -16,8 +17,8 @@ int addLabelParam(char *name, int direct, int lineNum)
 {
     labelParamsList = (struct labelParams *)myRealloc(labelParamsList, (labelParamsCounter + 2) * sizeof(struct labelParams));
     labelParamsList[labelParamsCounter].name = name;
-    labelParamsList[labelParamsCounter].codeAdress = getNextcommandWordAddress();
+    labelParamsList[labelParamsCounter].codeAddress = getNextCWAddress();
     labelParamsList[labelParamsCounter].direct = direct;
     labelParamsList[labelParamsCounter].lineNum = lineNum;
-    return addCommandWord(0, us_binary_to_int("010"));
+    return addCW(0, us_binary_to_int("010"));
 }

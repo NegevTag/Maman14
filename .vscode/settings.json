@@ -1,6 +1,7 @@
 {
     "files.associations": {
         "header.h": "c",
-        "typeinfo": "c"
+        "typeinfo": "c",
+        "commandsheader.h": "c"
     }
 }

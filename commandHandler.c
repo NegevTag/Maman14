@@ -9,28 +9,41 @@ void addCommand(char *commandName, char *param1, char *param2, int lineNum, int 
     int index;
     unsigned int machineCode =0;
     int currentError = 0;
+    int commandAdress;
     /*the command that this word represent*/
     struct command thisCom;
     /*checking which command was recived, if command is not valid print error */
-    if ((index = getCommandIndex(commandName)) == -1)
+    thisCom = getCommand(commandName, &currentError);
+    if (currentError == ERROR)
     {
         printf("Error:line %d, command name is not a valid", lineNum);
         (*error) = ERROR;
         return;
     }
-    thisCom = comList[index];
     /*add the opcode the address and the ARE of the current command of the command*/
     machineCode = 0;
     machineCode = (thisCom.opcode << 4) + thisCom.funct;
     machineCode <<= 8;
-    addCommandWord(machineCode,us_binary_to_int("100"));
+    commandAdress = getNextCWAddress();
+    addCW(machineCode,us_binary_to_int("100"));
     /**add words that represent the parmater*/
+    /*if there are 2 params the first is the input and the second is the output*/
     if (param2!=NULL)
     {
-        handleParam(1,param1,thisCom.opcode,lineNum,*currentError);
+        handleParam(1,param1,commandAdress,thisCom.possibleInAddressing,lineNum,&currentError);
+        if (currentError == ERROR)
+        {
+            (*error) = ERROR;
+            return;
+        }
+        handleParam(0,param2,commandAdress,thisCom.possibleInAddressing,lineNum,&currentError);
+        
     }
-    
-       
+    /*if there is only one parameter it is output parameter*/
+    else
+    {
+        handleParam(0,param1,commandAdress,thisCom.possibleInAddressing,lineNum,&currentError);
+    }      
 }
 /*update all the commands that wasent completed in iteration 1*/
 void updateCommands(int *error)
@@ -40,18 +53,15 @@ void updateCommands(int *error)
 void getcommandWordsList(char *as, char *ext)
 {
 }
-/*get the number of command words*/
-int getcommandWordsCounter()
-{
-}
 
 
 
 
 /*handle the parameter(add the appropriate word to the command word list, print error if accrued) 
-commandWord is the word that represent the command which this is the parameter for it */
-static void handleParam(int isInputParam, char *param, struct wordCommand commandWord, int possibleAddressing, int lineNum, int *error)
+commandWordAddress is the address of theword that represent the command which this is the parameter for it */
+static void handleParam(int isInputParam, char *param, int commandWordAddress, int possibleAddressing, int lineNum, int *error)
 {
+    int machineCode = getCWMachineCode(commandWordAddress);
     /*if it could be in immidiate addressing*/
     if (us_binary_to_int("0001") & possibleAddressing)
     {
@@ -76,7 +86,7 @@ static void handleParam(int isInputParam, char *param, struct wordCommand comman
             {
                 mask <<= 2;
             }
-            commandWord.machineCode |= mask;
+            setCWMachineCode(machineCode|mask);
             handleRelative(param, lineNum, error);
             return;
         }
@@ -94,7 +104,7 @@ static void handleParam(int isInputParam, char *param, struct wordCommand comman
             {
                 mask <<= 2;
             }
-            commandWord.machineCode |= mask;
+            setCWMachineCode(machineCode|mask);
             handleRegisterDirect(param, lineNum, error);
             return;
         }
@@ -109,7 +119,7 @@ static void handleParam(int isInputParam, char *param, struct wordCommand comman
         {
             mask <<= 2;
         }
-        commandWord.machineCode |= mask;
+        setCWMachineCode(machineCode|mask);
         handleDirect(param, lineNum, error);
         return;
     }
@@ -152,8 +162,7 @@ static void handleImmidiate(char *param, int lineNum, int *error)
         (*error) = ERROR;
         return;
     }
-    struct wordCommand result;
-    addCommandWord(number, us_binary_to_int("100"));
+    addCW(number, us_binary_to_int("100"));
 }
 /*handle relative parameter, by adding empty word to the command words list and add the parameter to the label param list if everything is ok.
  assuming that it is direct parameter*/
@@ -168,7 +177,6 @@ static void handleRegisterDirect(char *param, int lineNum, int *error)
     unsigned int machineCode = 1;
     machineCode <<= number;
     addCommandWord(machineCode, us_binary_to_int("100"));
-    return;
 }
 /*handle direct parameter, by adding empty word to the command words list and add the parameter to the label param list if everything is ok.
  assuming that it is direct parameter*/
@@ -176,6 +184,3 @@ static void handleDirect(char *param, int lineNum, int *error)
 {
     addLabelParam(param, 1,lineNum);
 }
-
-
-/*TODO: after splitting to files add bound check fall the methods*/
