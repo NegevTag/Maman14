@@ -3,7 +3,7 @@
 #include "header.h"
 #define ERROR 1
 
-void process(FILE *f)
+void process(FILE *f, char *fileName)
 {
     /*if error == 1 then error has accrued*/
     int error = 0;
@@ -72,7 +72,12 @@ void process(FILE *f)
         }
         lineCounter++;
     }
-    /* iteration 2 here*/
+    /* iteration 2*/
+    if (error != ERROR)
+    {
+        updateLabels();
+        updateEntryInstructions(fileName, &error);
+    }
 }
 
 /*read instruction by letting readEInstruction or readAllocationInstruction to handle it */
@@ -206,26 +211,30 @@ static int readStringInstruction(char *line, char *instruction, int afterInstruc
 static void readCommand(char *line, char *command, int afterCommand, int currentLine, int *error)
 {
     /*TODO:add option to ','*/
-    /*TODO: what happens if empty*/
+    /*TODO: what happens if emptyparamters*/
     char *param1;
     char *param2;
     int current;
+    int afterComma;
+    int afterWord;
     int currentError = 0;
     /*making the temporary instruction parmenant becuase it will be used*/
     makeTempLabelPermanent(getInstructionsWordsCount(), 0, 0, 0);
-    current = skipTabsAndSpaces(afterCommand, line);
-    param1 = readWordParam(line, current, currentLine, currentError, 0);
+    /*reading the command first parameter*/
+    current = skipTabsAndSpaces(current, line);
+    afterComma = skipComma(current, line);
+    afterWord = skipWord(current, line);
+    param1 = subString(current, min(afterComma - 1, afterWord), line);
+    current = skipTabsAndSpaces(afterComma, line);
+    /*if reached end of line there is only one parameter*/
+    if (checkEndOfLine(current, line))
+    {
+        addCommand(command, param1, param2, currentLine, error);
+    }
+    param2 = readWordParam(line, current, currentLine, currentError, 1);
     if (!currentError)
     {
-        param2 = readWordParam(line, current, currentLine, currentError, 1);
-        if (!currentError)
-        {
-            addCommand(command, param1, param2, currentLine, error);
-        }
-        else
-        {
-            *error = currentError;
-        }
+        addCommand(command, param1, param2, currentLine, error);
     }
     else
     {
@@ -269,12 +278,11 @@ static int checkEndOfLine(int current, char *str)
     return str[current] == '\n' || str[current] == '\0';
 }
 
-
 /*reading paramter that is a whole word, changing current to be the first after the paramter.
 last param should be 1 if this paramter is the last and 0 if isnt */
 static char *readWordParam(char *line, int *current, int lineNumber, int *error, int lastParam)
 {
-    char *param = (char*)myMalloc(sizeof(char) * MAX_LINE_LENGTH);
+    char *param = (char *)myMalloc(sizeof(char) * MAX_LINE_LENGTH);
     int afterParam;
     int current;
     /*extract the paramter of the instruction from the line*/

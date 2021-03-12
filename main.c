@@ -27,7 +27,7 @@ int main(int argc, char const *argv[])
             }
             else
             {
-               process(f);
+               process(f,argv[i]);
             }
             fclose(f);
         }

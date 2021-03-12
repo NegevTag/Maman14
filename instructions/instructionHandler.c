@@ -1,16 +1,41 @@
 /*handling all the instructions (hanchiot)*/
 #include "header.h"
 
-
 /* get all the words in the output format*/
 char *getinstructionsWordsList()
 {
 }
-/* update all the addresses of the instructions for iteration2*/
-void updateInstructions()
+/* update all the entry instructions, and creating the .ent output file*/
+void updateEntryInstructions(char *fileName, int *error)
 {
-    /* update adresses*/
-    /*update internal*/
+    int lineNum;
+    char *entryLabel;
+    int entryLabelAddress;
+    int i = 0;
+    FILE *f = fopen(strcat(fileName, ".en"), 'w');
+    if (!f)
+    {
+        printf("Error: could not open file\n", fileName);
+        (*error) = ERROR;
+        return;
+    }
+    /*make all entry label entry and add them to the list*/
+    while ((entryLabel = getEntryLabel(i, &lineNum)) != '\0')
+    {
+        entryLabelAddress = setEntry(entryLabel, lineNum, error);
+        if ((*error) != ERROR)
+        {
+            /*add the entry label to the file*/
+            fprintf(f, "%s %d", entryLabel, lineNum);
+        }
+    }
+    fclose(f);
+    /*if error accrued delete the file*/
+    if ((*error) ==ERROR)
+    {
+        remove(strcat(fileName, ".en"));
+    }
+
 }
 int getInstructionsWordsCount()
 {
@@ -25,7 +50,7 @@ void addEInstruction(char *instruction, char *param, int lineNumber, int *error)
         addLabel(param, 0, 0, 1, 1, 0, lineNumber, error);
         return;
     }
-    /*if instruction is entry add the param to tenterylist*/
+    /*if instruction is entry add the param to to enterylist*/
     else if (strcmp(instruction, ".entry") == 0)
     {
         if (!isValidLabel(param, 0))
@@ -36,7 +61,7 @@ void addEInstruction(char *instruction, char *param, int lineNumber, int *error)
         }
         else
         {
-            addEntry(instruction,lineNumber);
+            addEntry(instruction, lineNumber);
         }
     }
     /*if the instruction is not valid print error*/
@@ -47,7 +72,6 @@ void addEInstruction(char *instruction, char *param, int lineNumber, int *error)
         return;
     }
 }
-
 
 void addDataInstruction(char *instruction, int params[], int numberOfParams, int lineNumber, int *error)
 {
@@ -112,4 +136,3 @@ static void addWordNumber(int num)
 }
 
 /*TODO: rename all lines to line numbers*/
-

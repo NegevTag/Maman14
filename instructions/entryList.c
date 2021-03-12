@@ -1,5 +1,5 @@
 /*represent the list of labels that should be entry*/
-
+#include "header.h"
 static struct entry
 {
     char *label;
@@ -24,4 +24,19 @@ void addEntry(char *label,int lineNumber)
 void initializeEntryList()
 {
     entryList = (struct entry *)(myMalloc(sizeof(struct entry)));
+}
+/*get the number of entry variables*/
+int getNumberOfEntries(){
+    return entryIndex;
+}
+/*return the label of the entry in the index, return '\0' if it is out of range*/
+char * getEntryLabel(int index, int *lineNum){
+    if (index>= 0 && index< entryIndex)
+    {
+        *lineNum = entryList[index].lineNum;
+        return entryList[index].label;
+    }else{
+        return ERROR;
+    }
+    
 }
