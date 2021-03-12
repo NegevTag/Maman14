@@ -5,7 +5,8 @@
 #define NUMBER_OF_COMMANDS 16
 #define MEMORY_SIZE 4096
 #define MAX_LINE_LENGTH 80
-#define ERROR 1
+/*if there was an error this number indicate it, should always be different from 0*/
+#define ERROR -1
 #define COMMENT_SPECIFIER ';'
 #define TAG_SPECIFIER ':'
 #define INSTRUCTION_SPECIFIER '.'
