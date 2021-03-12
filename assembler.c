@@ -25,9 +25,9 @@ void process(FILE *f)
         afterWord = getWordLength(current, line);
         firstWord = subString(current, afterWord, line);
         /*if the first word is label check that is valid and save it as temp*/
-        if (firstWord[strlen(firstWord) - 1] == TAG_SPECIFIER)
+        if (firstWord[strlen(firstWord) - 1] == LABEL_SPECIFIER)
         {
-            addtempLabel(firstWord, lineCounter, &tempError, 1);
+            addTempLabel(firstWord, lineCounter, &tempError, 1);
             if (tempError == ERROR)
             {
                 error = ERROR;

@@ -8,7 +8,7 @@
 /*if there was an error this number indicate it, should always be different from 0*/
 #define ERROR -1
 #define COMMENT_SPECIFIER ';'
-#define TAG_SPECIFIER ':'
+#define LABEL_SPECIFIER ':'
 #define INSTRUCTION_SPECIFIER '.'
 #define STRING_SPECIFIER "\""
 #define IMMEDIATE_SPECIFIER '#'

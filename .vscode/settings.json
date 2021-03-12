@@ -3,5 +3,8 @@
         "header.h": "c",
         "typeinfo": "c",
         "commandsheader.h": "c"
-    }
+    },
+    "cSpell.words": [
+        "horaa"
+    ]
 }

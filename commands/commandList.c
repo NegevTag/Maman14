@@ -123,3 +123,15 @@ struct command getCommand(char *commandName, int *exist)
     (*exist) = 0;
     return comList[0];
 }
+/*checking if specified command exist*/
+int isCommandExist(char * commandName){
+    int i = 0;
+    for (i = 0; i < NUMBER_OF_COMMANDS; i++)
+    {
+        if (strcmp(comList[i].name, commandName) == 0)
+        {
+           return 1;
+        }
+    }
+    return 0;
+}
