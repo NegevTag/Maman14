@@ -14,7 +14,6 @@ static void handleDirect(char *param, int lineNum, int *error);
 /* add the whole command to the machinecode, if only 1 paramter recived param2 should be null*/
 void addCommand(char *commandName, char *param1, char *param2, int lineNum, int *error)
 {
-    int index;
     unsigned int machineCode = 0;
     int currentError = 0;
     int commandAdress;
@@ -57,26 +56,27 @@ void updateCommands(int *error, char *fileName)
 {
     int i;
     int reachedEnd = 0;
-    int *external = 0;
+    int external = 0;
     int extEmpty = 1;
-    FILE *ext = fopen(strcmp(fileName, ".ext"), "w");
-    FILE *ob = fopen(strcmp(fileName, ".ob"), 'w');
+    struct labelParam nextLabelParam;
+    FILE *ext = fopen(strcat(fileName, ".ext"), "w");
+    FILE *ob = fopen(strcat(fileName, ".ob"), "w");
     if (!ob || !ext)
     {
-        printf("Error: could not open file\n", fileName);
+        printf("Error: could not open file\n");
         (*error) = ERROR;
         return;
     }
-    struct labelParam nextLabelParam = getNextLabelParam(&reachedEnd);
+    nextLabelParam = getNextLabelParam(&reachedEnd);
     /*for each command word update if it is include label parameter and print the output to the file*/
-    for (int i = 0; i < getNumberOfCW(); i++)
+    for (i = 0; i < getNumberOfCW(); i++)
     {
         /*if line with label param reached update the command word to the label adress *
         and if it is extrnal add it to the extrnal list and change to E in ARE*/
         if (!reachedEnd && nextLabelParam.codeAddress == i + FIRST_ADDRESS)
         {
             int labelAdress;
-            labelAdress = getLabelAddress(nextLabelParam.name, &external, nextLabelParam.lineNum, &error);
+            labelAdress = getLabelAddress(nextLabelParam.name, &external, nextLabelParam.lineNum, error);
 
             /* if the variable is external add it to the ext file and change to E*/
             if (external)
@@ -122,7 +122,7 @@ static void handleParam(int isInputParam, char *param, int commandWordAddress, i
         /*if it is immediate addressing*/
         if (checkIfImmidiate(param))
         {
-            handleImmediate(param, lineNum, error);
+            handleImmidiate(param, lineNum, error);
             return;
         }
     }
@@ -167,15 +167,19 @@ static void handleParam(int isInputParam, char *param, int commandWordAddress, i
     /*if it could be direct addressing*/
     if (us_binary_to_int("0010") & possibleAddressing)
     {
-        unsigned int mask = 3;
-        /*if it is in param move it 2 to the left*/
-        if (isInputParam)
+        if (checkIfDirect(param))
         {
-            mask <<= 2;
+
+            unsigned int mask = 3;
+            /*if it is in param move it 2 to the left*/
+            if (isInputParam)
+            {
+                mask <<= 2;
+            }
+            setCWMachineCode(commandWordAddress, machineCode | mask);
+            handleDirect(param, lineNum, error);
+            return;
         }
-        setCWMachineCode(commandWordAddress, machineCode | mask);
-        handleDirect(param, lineNum, error);
-        return;
     }
     printf("Error: line %d, parameter is not valid", lineNum);
     (*error) = ERROR;
@@ -204,13 +208,13 @@ static int checkIfDirect(char *param)
 /*handle immidiate parameter, by adding it to the commandWordList if everything is ok , assuming that it is immidiate parameter*/
 static void handleImmidiate(char *param, int lineNum, int *error)
 {
-    char *numberStr = substring(1, strlen(param), param);
+    char *numberStr = subString(1, strlen(param), param);
     int number = atoi(numberStr);
     /*check if the number is valid -
-    /* if the parmater is zeo ther are two options:
+    if the parmater is zeo ther are two options:
     or it really is is zero or that atoi was returning zero because it is not a number
     if the number is not zero checking that it in the ranges*/
-    if ((number == 0 && !checkIfZero(number) || !isValidNumber(number)))
+    if ((number == 0 && !checkIfZero(numberStr)) || !isValidNumber(number))
     {
         printf("Error: line %d, number is not valid", lineNum);
         (*error) = ERROR;
@@ -230,7 +234,7 @@ static void handleRegisterDirect(char *param, int lineNum, int *error)
     int number = param[1] - '0';
     unsigned int machineCode = 1;
     machineCode <<= number;
-    addCommandWord(machineCode, us_binary_to_int("100"));
+    addCW(machineCode, us_binary_to_int("100"));
 }
 /*handle direct parameter, by adding empty word to the command words list and add the parameter to the label param list if everything is ok.
  assuming that it is direct parameter*/

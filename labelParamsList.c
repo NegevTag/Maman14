@@ -10,7 +10,7 @@ static int lastIndex = 0;
 
 static int firstIndex = 0;
 /*add the paramter to the parm label list and add empty commandWord that will represent the paramterafter iteration2, return ERROR if error occurred**/
-int addLabelToList(char *name, int direct, int lineNum)
+int addLabelParam(char *name, int direct, int lineNum)
 {
     labelParamsList = (struct labelParam *)myRealloc(labelParamsList, (lastIndex + 2) * sizeof(struct labelParam));
     labelParamsList[lastIndex].name = name;

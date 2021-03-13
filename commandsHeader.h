@@ -24,6 +24,6 @@ int changeCWToExternal(int address);
 int addCWRepresentativeStringToFile(FILE *f, int address);
 struct command getCommand(char *commandName, int *exist);
 int isCommandExist(char *commandName);
-int addLabelToList(char *name, int direct, int lineNum);
+int addLabelParam(char *name, int direct, int lineNum);
 struct labelParam getNextLabelParam(int *reachedEnd);
 

@@ -1,0 +1,7 @@
+commandHandler.c: In function ‘handleParam’:
+commandHandler.c:170:13: warning: the address of ‘checkIfDirect’ will always evaluate as ‘true’ [-Waddress]
+         if (checkIfDirect)
+             ^
+commandHandler.c:175:9: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+         unsigned int mask = 3;
+         ^

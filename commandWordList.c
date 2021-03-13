@@ -5,7 +5,7 @@
 static int isValidAddress(int address);
 
 /*represent word of code*/
-static struct wordCommand
+struct wordCommand
 {
     unsigned int address;
     unsigned int machineCode : 12;
