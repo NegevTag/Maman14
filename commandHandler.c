@@ -2,6 +2,15 @@
 #include "projectHeader.h"
 #include "commandsHeader.h"
 
+static void handleParam(int isInputParam, char *param, int commandWordAddress, int possibleAddressing, int lineNum, int *error);
+static int checkIfImmidiate(char *param);
+static int checkIfRelative(char *param);
+static int checkIfRegisterDirect(char *param);
+static int checkIfDirect(char *param);
+static void handleImmidiate(char *param, int lineNum, int *error);
+static void handleRelative(char *param, int lineNum, int *error);
+static void handleRegisterDirect(char *param, int lineNum, int *error);
+static void handleDirect(char *param, int lineNum, int *error);
 /* add the whole command to the machinecode, if only 1 paramter recived param2 should be null*/
 void addCommand(char *commandName, char *param1, char *param2, int lineNum, int *error)
 {
@@ -131,7 +140,7 @@ static void handleParam(int isInputParam, char *param, int commandWordAddress, i
             {
                 mask <<= 2;
             }
-            setCWMachineCode(machineCode | mask);
+            setCWMachineCode(commandWordAddress, machineCode | mask);
             handleRelative(param, lineNum, error);
             return;
         }
@@ -149,7 +158,7 @@ static void handleParam(int isInputParam, char *param, int commandWordAddress, i
             {
                 mask <<= 2;
             }
-            setCWMachineCode(machineCode | mask);
+            setCWMachineCode(commandWordAddress, machineCode | mask);
             handleRegisterDirect(param, lineNum, error);
             return;
         }
@@ -164,7 +173,7 @@ static void handleParam(int isInputParam, char *param, int commandWordAddress, i
         {
             mask <<= 2;
         }
-        setCWMachineCode(machineCode | mask);
+        setCWMachineCode(commandWordAddress, machineCode | mask);
         handleDirect(param, lineNum, error);
         return;
     }
@@ -189,7 +198,7 @@ static int checkIfRegisterDirect(char *param)
 /*checking if the parameter is in the direct addressing format*/
 static int checkIfDirect(char *param)
 {
-    return isValidLabel(param);
+    return isValidLabel(param, 0);
 }
 
 /*handle immidiate parameter, by adding it to the commandWordList if everything is ok , assuming that it is immidiate parameter*/

@@ -27,6 +27,7 @@ void *myRealloc(int *ptr, int size);
 int isValidNumber(int number);
 int checkIfZero(char *zeroStr);
 void initializelabelList();
+void initializeLabelParamsList();
 int isValidLabel(char *label, int withColon);
 int isDefinedLabel(char *purelabel);
 void addLabel(char *label, int withColon, int address, int data, int external, int entry, int lineNum, int *error);
