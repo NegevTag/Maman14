@@ -1,6 +1,6 @@
 /*handling all the instructions (hanchiot)*/
-#include "header.h"
-
+#include "projectHeader.h"
+#include "instructionHeader.h"
 /* get all the words in the output format*/
 char *getinstructionsWordsList()
 {
@@ -153,5 +153,3 @@ static void addWordNumber(int num)
 {
     addWord(num, us_binary_to_int("100"));
 }
-
-/*TODO: rename all lines to line numbers*/

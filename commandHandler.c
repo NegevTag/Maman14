@@ -1,5 +1,5 @@
 /* handling all commands (horaa) operations for iteration 1 and 2 */
-#include "header.h"
+#include "projectHeader.h"
 #include "commandsHeader.h"
 
 /* add the whole command to the machinecode, if only 1 paramter recived param2 should be null*/
@@ -101,7 +101,6 @@ void updateCommands(int *error, char *fileName)
         remove(strcat(fileName, ".en"));
     }
 }
-
 
 /*handle the parameter(add the appropriate word to the command word list, print error if accrued) 
 commandWordAddress is the address of theword that represent the command which this is the parameter for it */

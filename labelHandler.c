@@ -1,4 +1,4 @@
-#include "header.h"
+#include "projectHeader.h"
 /*handling all the labels opartions, not separate from the data structure because it is almost the same as the data structure interface*/
 
 static struct label
@@ -149,7 +149,7 @@ int setEntry(char *label, int lineNum, int *error)
     int i;
     for (i = 0; i < labelsCounter; i++)
     {
-        if (strcmp(labelList[i].label,label) == 0)
+        if (strcmp(labelList[i].label, label) == 0)
         {
             /*internal lablel cant be external*/
             if (labelList[i].external == 1)
@@ -176,7 +176,7 @@ int getLabelAddress(char *label, int *external, int lineNum, int *error)
     int i;
     for (i = 0; i < labelsCounter; i++)
     {
-        if (strcmp(labelList[i].label,label) == 0)
+        if (strcmp(labelList[i].label, label) == 0)
         {
             (*external) = labelList[i].external;
             return labelList[i].address;

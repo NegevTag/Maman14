@@ -1,6 +1,6 @@
 /*represent the list of the paramter for commands that are labels*/
 /*not responsible for printing error message if occures*/
-#include "header.h"
+#include "projectHeader.h"
 #include "commandsHeader.h"
 
 /*the list of the labels paramter*/
@@ -36,5 +36,4 @@ struct labelParam getNextLabelParam(int *reachedEnd)
     }
     (*reachedEnd) = 1;
     return trash;
-
 }

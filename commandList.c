@@ -1,6 +1,6 @@
 /*the list of the diffrent commands (mov,cmp,add, etc) and basic information about them*/
 /*not responsible for printing error messeges if accures*/
-#include "header.h"
+#include "projectHeader.h"
 #include "commandsHeader.h"
 #define ONE_OR_THREE (2 + 8)
 #define ZERO_OR_ONE_OR_THREE (1 + 2 + 8)
@@ -124,13 +124,14 @@ struct command getCommand(char *commandName, int *exist)
     return comList[0];
 }
 /*checking if specified command exist*/
-int isCommandExist(char * commandName){
+int isCommandExist(char *commandName)
+{
     int i = 0;
     for (i = 0; i < NUMBER_OF_COMMANDS; i++)
     {
         if (strcmp(comList[i].name, commandName) == 0)
         {
-           return 1;
+            return 1;
         }
     }
     return 0;

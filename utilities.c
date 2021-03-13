@@ -1,4 +1,4 @@
-#include "header.h"
+#include "projectHeader.h"
 /*utilities functions for the use of others*/
 /*transferring unsigned binary number shown as string to int, assuming that the number is legal*/
 int us_binary_to_int(char *binary)
@@ -69,7 +69,7 @@ int isValidNumber(int number)
     return number <= MAX_NUMBER && number >= MIN_NUMBER;
 }
 /*check if string represent the number zero */
-static int checkIfZero(char *zeroStr)
+int checkIfZero(char *zeroStr)
 {
     int i = 0;
     int zero = 1;

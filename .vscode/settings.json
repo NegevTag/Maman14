@@ -2,7 +2,9 @@
     "files.associations": {
         "header.h": "c",
         "typeinfo": "c",
-        "commandsheader.h": "c"
+        "commandsheader.h": "c",
+        "projectheader.h": "c",
+        "instructionheader.h": "c"
     },
     "cSpell.words": [
         "horaa"

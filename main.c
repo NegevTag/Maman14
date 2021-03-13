@@ -12,6 +12,7 @@
 int main(int argc, char const *argv[])
 {
     int i;
+    initializeCommands();
     if (argc == 1)
     {
         printf("Error: At least one file must be specified.\n");
@@ -20,6 +21,9 @@ int main(int argc, char const *argv[])
     {
         for (int i = 1; i < argc; i++)
         {
+            initializeLabelParamsList();
+            initializeEntryList();
+            initializelabelList();
             FILE *f = fopen(strcat(argv[i],".as"), "r");
             if (!f)
             {

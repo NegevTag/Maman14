@@ -1,30 +1,32 @@
 /*represent the words that represent commands in the machineCode*/
 /*not responsible for printing error messeges if accures*/
-#include "header.h"
+#include "projectHeader.h"
 #include "commandsHeader.h"
+static int isValidAddress(int address);
+
 /*represent word of code*/
 static struct wordCommand
 {
     unsigned int address;
     unsigned int machineCode : 12;
-    unsigned int ARE : 3;
+    unsigned int ARE : 3; /* 001 for E, 010 for R, 100 for A*/
 };
 
 static int commandWordsCounter = 0;
 
 static struct wordCommand commandWordList[MEMORY_SIZE];
-/*add command word to the command word list, change error to ERROR if error occurred*/
-void addCW(int machineCode, int ARE, int *error)
+/*add command word to the command word list, return ERROR if error occurred*/
+int addCW(int machineCode, int ARE)
 {
     if (commandWordsCounter >= MEMORY_SIZE)
     {
-        (*error) = ERROR;
-        return;
+        return ERROR;
     }
     commandWordList[commandWordsCounter].address = FIRST_ADDRESS + commandWordsCounter;
     commandWordList[commandWordsCounter].machineCode = machineCode;
     commandWordList[commandWordsCounter].ARE = ARE;
     commandWordsCounter++;
+    return 1;
 }
 /*return the number of commandwords*/
 int getNumberOfCW()
@@ -56,41 +58,41 @@ int getCWMachineCode(int address)
     return commandWordList[address - FIRST_ADDRESS].machineCode;
 }
 /*change command word ARE to E return 1 if worked and error if not*/
-int changeCWToExternal(int address){
-    if(isValidAddress(address)){
+int changeCWToExternal(int address)
+{
+    if (isValidAddress(address))
+    {
         commandWordList[address - FIRST_ADDRESS].ARE = us_binary_to_int("001");
         return 1;
     }
     return 0;
 }
 /*get the representative string of the command by the output file format, return ERROR if not valid */
-int addCWRepresentativeStringToFile(FILE *f,int address){
+int addCWRepresentativeStringToFile(FILE *f, int address)
+{
     char ARE = 0;
     if (ARE == us_binary_to_int("001"))
     {
-        ARE ='E';
+        ARE = 'E';
     }
     if (ARE == us_binary_to_int("010"))
     {
-        ARE ='R';
+        ARE = 'R';
     }
     if (ARE == us_binary_to_int("100"))
     {
-        ARE ='A';
+        ARE = 'A';
     }
-    
+
     if (isValidAddress(address))
     {
-        fprintf(f,"%d %x %c\n",commandWordList[address - FIRST_ADDRESS].address, commandWordList[address - FIRST_ADDRESS].machineCode,ARE);
+        fprintf(f, "%d %x %c\n", commandWordList[address - FIRST_ADDRESS].address, commandWordList[address - FIRST_ADDRESS].machineCode, ARE);
         return 1;
     }
     return ERROR;
-    
-    
 }
 /*check if adress is valid*/
 static int isValidAddress(int address)
 {
     return address >= FIRST_ADDRESS && address < commandWordsCounter + FIRST_ADDRESS;
 }
-
