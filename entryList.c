@@ -1,7 +1,7 @@
 /*represent the list of labels that should be entry*/
 #include "projectHeader.h"
 #include "instructionHeader.h"
-static struct entry
+struct entry
 {
     char *label;
     int lineNum;
@@ -40,6 +40,6 @@ char *getEntryLabel(int index, int *lineNum)
     }
     else
     {
-        return ERROR;
+        return "\0";
     }
 }

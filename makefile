@@ -1,4 +1,4 @@
-prog: commandHandler.o commandList.o commandWordList.o labelParamList.o instructionHandler.o entryList.o instructionWordsList.o labelHandler.o assembler.o utilities.o main.o
+prog: commandHandler.o commandList.o commandWordList.o labelParamsList.o instructionHandler.o entryList.o instructionWordsList.o labelHandler.o assembler.o utilities.o main.o
 
 	gcc -g -ansi -Wall -pedantic commandHandler.o commandList.o commandWordList.o labelParamList.o instructionHandler.o entryList.o instructionWordsList.o labelHandler.o assembler.o utilities.o main.o -o prog 2>> errors.txt
 
@@ -16,9 +16,9 @@ commandWordList.o: commandWordList.c projectHeader.h commandsHeader.h
 
 	gcc -c -ansi -Wall -pedantic commandWordList.c -o commandWordList.o 2>> errors.txt
 
-labelParamList.o: labelParamList.c projectHeader.h commandsHeader.h 2>> errors.txt
+labelParamsList.o: labelParamsList.c projectHeader.h commandsHeader.h 
 
-	gcc -c -ansi -Wall -pedantic labelParamList.c -o labelParamList.o 2>> errors.txt
+	gcc -c -ansi -Wall -pedantic labelParamsList.c -o labelParamsList.o 2>> errors.txt
 
 
 

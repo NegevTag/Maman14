@@ -1,10 +1,8 @@
 /*handling all the instructions (hanchiot)*/
 #include "projectHeader.h"
 #include "instructionHeader.h"
-/* get all the words in the output format*/
-char *getinstructionsWordsList()
-{
-}
+
+static void addWordNumber(int num);
 /* update all the entry instructions, and creating the .ent output file*/
 void updateEntryInstructions(char *fileName, int *error)
 {
@@ -13,10 +11,10 @@ void updateEntryInstructions(char *fileName, int *error)
     int entryLabelAddress;
     int i = 0;
     int emptyFile = 1;
-    FILE *f = fopen(strcat(fileName, ".en"), 'w');
+    FILE *f = fopen(strcat(fileName, ".en"), "w");
     if (!f)
     {
-        printf("Error: could not open file\n", fileName);
+        printf("Error: could not open file\n");
         (*error) = ERROR;
         return;
     }
@@ -27,7 +25,7 @@ void updateEntryInstructions(char *fileName, int *error)
         if ((*error) != ERROR)
         {
             /*add the entry label to the file*/
-            fprintf(f, "%s %d", entryLabel, lineNum);
+            fprintf(f, "%s %d", entryLabel, entryLabelAddress);
             emptyFile = 0;
         }
     }
@@ -42,13 +40,13 @@ void updateEntryInstructions(char *fileName, int *error)
 void appendInstructionToOutput(char *fileName, int *error)
 {
     int i;
-    FILE *ob = fopen(strcmp(fileName, ".ob"), 'a');
-    if (!(*error) != ERROR)
+    FILE *ob = fopen(strcat(fileName, ".ob"), "a");
+    if ((*error) != ERROR)
     {
 
         if (!ob)
         {
-            printf("Error: could not open file\n", fileName);
+            printf("Error: could not open file\n");
             (*error) = ERROR;
             return;
         }
@@ -65,7 +63,6 @@ void addEInstruction(char *instruction, char *param, int lineNum, int *error)
     /*if instruction is extern add param to labels*/
     if (strcmp(instruction, ".extern") == 0)
     {
-        int tempError = 0;
         addLabel(param, 0, 0, 1, 1, 0, lineNum, error);
         return;
     }

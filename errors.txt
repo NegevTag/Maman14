@@ -1,7 +1,93 @@
-commandHandler.c: In function ‘handleParam’:
-commandHandler.c:170:13: warning: the address of ‘checkIfDirect’ will always evaluate as ‘true’ [-Waddress]
-         if (checkIfDirect)
-             ^
-commandHandler.c:175:9: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
-         unsigned int mask = 3;
+
+ 
+assembler.c: In function ‘readDataInstruction’:
+assembler.c:156:28: warning: implicit declaration of function ‘getInstructionsWordsCount’ [-Wimplicit-function-declaration]
+     makeTempLabelPermanent(getInstructionsWordsCount(), 1, 0, 0);
+
+                            ^
+assembler.c:166:20: warning: format ‘%d’ expects argument of type ‘int’, but argument 2 has type ‘char *’ [-Wformat=]
+             printf("Error:line %d, extraneous comma after parameters list", line);
+
+                    ^
+assembler.c:192:16: warning: format ‘%d’ expects argument of type ‘int’, but argument 2 has type ‘char *’ [-Wformat=]
+         printf("Error:line %d, extraneous comma after parameters list", line);
+
+                ^
+assembler.c:196:74: warning: passing argument 5 of ‘addDataInstruction’ makes pointer from integer without a cast [-Wint-conversion]
+     addDataInstruction(instruction, params, numberOfParams, currentLine, *error);
+
+                                                                          ^
+In file included from assembler.c:2:0:
+projectHeader.h:44:6: note: expected ‘int *’ but argument is of type ‘int’
+ void addDataInstruction(char *instruction, int params[], int numberOfParams, int lineNum, int *error);
+
+      ^
+assembler.c:154:9: warning: unused variable ‘finished’ [-Wunused-variable]
+     int finished = 0;
+
          ^
+assembler.c: In function ‘readStringInstruction’:
+assembler.c:211:33: warning: passing argument 2 of ‘readWordParam’ makes pointer from integer without a cast [-Wint-conversion]
+     param = readWordParam(line, current, currentLine, &currentError, 0);
+
+                                 ^
+assembler.c:12:14: note: expected ‘int *’ but argument is of type ‘int’
+ static char *readWordParam(char *line, int *current, int lineNum, int *error, int lastParam);
+
+              ^
+assembler.c:220:1: warning: no return statement in function returning non-void [-Wreturn-type]
+ }
+
+ ^
+assembler.c: In function ‘readCommand’:
+assembler.c:243:34: warning: passing argument 2 of ‘readWordParam’ makes pointer from integer without a cast [-Wint-conversion]
+     param2 = readWordParam(line, current, currentLine, currentError, 1);
+
+                                  ^
+assembler.c:12:14: note: expected ‘int *’ but argument is of type ‘int’
+ static char *readWordParam(char *line, int *current, int lineNum, int *error, int lastParam);
+
+              ^
+assembler.c:243:56: warning: passing argument 4 of ‘readWordParam’ makes pointer from integer without a cast [-Wint-conversion]
+     param2 = readWordParam(line, current, currentLine, currentError, 1);
+
+                                                        ^
+assembler.c:12:14: note: expected ‘int *’ but argument is of type ‘int’
+ static char *readWordParam(char *line, int *current, int lineNum, int *error, int lastParam);
+
+              ^
+assembler.c: In function ‘skipWord’:
+assembler.c:267:25: warning: comparison between pointer and integer
+     while (str[current] != " " && str[current] != "\t" && str[current] != "\n" && str[current] != "\0")
+
+                         ^
+assembler.c:267:25: warning: comparison with string literal results in unspecified behavior [-Waddress]
+assembler.c:267:48: warning: comparison between pointer and integer
+     while (str[current] != " " && str[current] != "\t" && str[current] != "\n" && str[current] != "\0")
+
+                                                ^
+assembler.c:267:48: warning: comparison with string literal results in unspecified behavior [-Waddress]
+assembler.c:267:72: warning: comparison between pointer and integer
+     while (str[current] != " " && str[current] != "\t" && str[current] != "\n" && str[current] != "\0")
+
+                                                                        ^
+assembler.c:267:72: warning: comparison with string literal results in unspecified behavior [-Waddress]
+assembler.c:267:96: warning: comparison between pointer and integer
+     while (str[current] != " " && str[current] != "\t" && str[current] != "\n" && str[current] != "\0")
+
+                                                                                                ^
+assembler.c:267:96: warning: comparison with string literal results in unspecified behavior [-Waddress]
+assembler.c: In function ‘readCommand’:
+assembler.c:233:13: warning: ‘current’ is used uninitialized in this function [-Wuninitialized]
+     current = skipTabsAndSpaces(current, line);
+
+             ^
+assembler.c:241:9: warning: ‘param2’ may be used uninitialized in this function [-Wmaybe-uninitialized]
+         addCommand(command, param1, param2, currentLine, error);
+
+         ^
+main.c:1:20: fatal error: header.h: No such file or directory
+ #include "header.h"
+
+                    ^
+compilation terminated.

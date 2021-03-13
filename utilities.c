@@ -53,7 +53,7 @@ void *myMalloc(int size)
 }
 
 /*reallocate memory and exit if problem accrued  */
-void *myRealloc(int *ptr, int size)
+void *myRealloc(void *ptr, int size)
 {
     void *temp = realloc(ptr, size);
     if (!temp)

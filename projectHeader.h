@@ -10,7 +10,7 @@
 #define COMMENT_SPECIFIER ';'
 #define LABEL_SPECIFIER ':'
 #define INSTRUCTION_SPECIFIER '.'
-#define STRING_SPECIFIER "\""
+#define STRING_SPECIFIER '\"'
 #define IMMEDIATE_SPECIFIER '#'
 #define RELATIVE_SPECIFIER '%'
 /*2^11 - 1*/
@@ -23,7 +23,7 @@ int us_binary_to_int(char *binary);
 char *subString(int start, int end, char *str);
 int min(int x, int y);
 void *myMalloc(int size);
-void *myRealloc(int *ptr, int size);
+void *myRealloc(void *ptr, int size);
 int isValidNumber(int number);
 int checkIfZero(char *zeroStr);
 void initializelabelList();
@@ -44,4 +44,9 @@ void addEInstruction(char *instruction, char *param, int lineNum, int *error);
 void addDataInstruction(char *instruction, int params[], int numberOfParams, int lineNum, int *error);
 void addStringInstruction(char *instruction, char *param, int lineNum, int *error);
 void addCommand(char *commandName, char *param1, char *param2, int lineNum, int *error);
-void updateCommands(int *error, char *fileName);
+void updateCommands(char *fileName,int *error);
+int getNumberOfCW();
+int isCommandExist(char *commandName);
+int getNextCWAddress();
+int getNumberOfIW();
+

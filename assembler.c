@@ -1,5 +1,15 @@
-/*processing file and creating the outputs files*/#include "header.h"
-#define ERROR 1
+/*processing file and creating the outputs files*/
+#include "projectHeader.h"
+static void readInstruction(char *instruction, int afterInstruction, char *line, int currentLine, int *error);
+static void readEInstruction(char *line, char *instruction, int afterInstruction, int currentLine, int *error);
+static void readDataInstruction(char *line, char *instruction, int afterInstruction, int currentLine, int *error);
+static int readStringInstruction(char *line, char *instruction, int afterInstruction, int currentLine, int *error);
+static void readCommand(char *line, char *command, int afterCommand, int currentLine, int *error);
+static int skipTabsAndSpaces(int current, char str[]);
+static int skipWord(int current, char str[]);
+static int skipComma(int current, char str[]);
+static int checkEndOfLine(int current, char *str);
+static char *readWordParam(char *line, int *current, int lineNum, int *error, int lastParam);
 
 void process(FILE *f, char *fileName)
 {
@@ -20,7 +30,7 @@ void process(FILE *f, char *fileName)
         {
             continue;
         }
-        afterWord = getWordLength(current, line);
+        afterWord = skipWord(current, line);
         firstWord = subString(current, afterWord, line);
         /*if the first word is label check that is valid and save it as temp*/
         if (firstWord[strlen(firstWord) - 1] == LABEL_SPECIFIER)
@@ -51,7 +61,7 @@ void process(FILE *f, char *fileName)
         if (checkEndOfLine(current, line))
         {
             error = ERROR;
-            printf("Error: line %d, line must contain command or instruction");
+            printf("Error: line %d, line must contain command or instruction",lineNum);
             continue;
         }
         afterWord = skipWord(current, line);
@@ -109,7 +119,7 @@ static void readInstruction(char *instruction, int afterInstruction, char *line,
 
 /*read e instruction (entry or external) - divide it to words and let instructions handler to handle it.
  change error to ERROR if syntex error accrued */
-static int readEInstruction(char *line, char *instruction, int afterInstruction, int currentLine, int *error)
+static void readEInstruction(char *line, char *instruction, int afterInstruction, int currentLine, int *error)
 {
     char *param;
     int current;
@@ -119,7 +129,7 @@ static int readEInstruction(char *line, char *instruction, int afterInstruction,
     removeTempLabel();
     /*extract the paramter of the instruction from the line*/
     current = skipTabsAndSpaces(afterInstruction, line);
-    param = readWordParam(line, current, currentLine, &currentError, 0);
+    param = readWordParam(line, &current, currentLine, &currentError, 0);
     if (!currentError)
     {
         addEInstruction(instruction, param, currentLine, error);
@@ -143,7 +153,7 @@ static void readDataInstruction(char *line, char *instruction, int afterInstruct
     int afterComma;
     int finished = 0;
     /*making the temporary instruction parmenant becuase it will be used*/
-    makeTempLabelPermanent(getInstructionsWordsCount(), 1, 0, 0);
+    makeTempLabelPermanent(getNumberOfIW(), 1, 0, 0);
     /*add all parameters to the list*/
     while (!checkEndOfLine(current, line))
     {
@@ -283,20 +293,19 @@ static char *readWordParam(char *line, int *current, int lineNum, int *error, in
 {
     char *param = (char *)myMalloc(sizeof(char) * MAX_LINE_LENGTH);
     int afterParam;
-    int current;
     /*extract the paramter of the instruction from the line*/
-    int current = skipTabsAndSpaces(current, line);
-    if (checkEndOfLine(current, line))
+    int index = skipTabsAndSpaces(*current, line);
+    if (checkEndOfLine(index, line))
     {
-        printf("Error: line %d, the instruction must receive argument", lineNum);
+        printf("Error: line %d, No argument was received", lineNum);
         (*error) = ERROR;
         return NULL;
     }
-    afterParam = skipWord(current, line);
+    afterParam = skipWord(index, line);
     if (lastParam)
     {
-        current = skipTabsAndSpaces(current, line);
-        if (!checkEndOfLine(current, line))
+        index = skipTabsAndSpaces(index, line);
+        if (!checkEndOfLine(index, line))
         {
             printf("Error: line %d, Extraneous text after instruction", lineNum);
             (*error) = ERROR;

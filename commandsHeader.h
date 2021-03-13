@@ -16,14 +16,11 @@ struct labelParam
     int lineNum;     /*the number of the line it is appeared in*/
 };
 int addCW(int machineCode, int ARE);
-int getNumberOfCW();
-int getNextCWAddress();
 int setCWMachineCode(int address, int machineCode);
 int getCWMachineCode(int address);
 int changeCWToExternal(int address);
 int addCWRepresentativeStringToFile(FILE *f, int address);
 struct command getCommand(char *commandName, int *exist);
-int isCommandExist(char *commandName);
 int addLabelParam(char *name, int direct, int lineNum);
 struct labelParam getNextLabelParam(int *reachedEnd);
 

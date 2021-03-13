@@ -1,7 +1,7 @@
 #include "projectHeader.h"
 /*handling all the labels opartions, not separate from the data structure because it is almost the same as the data structure interface*/
 
-static struct label
+struct label
 {
     char *label; /*the label itself, without colon*/
     int address;
@@ -46,7 +46,7 @@ int isValidLabel(char *label, int withColon)
         return 0;
     }
     /*checking if the label is instruction */
-    if (strcmp(pureLabel, "data") == 0 || strcmp(pureLabel, "string") == 0 || strcmp(pureLabel, "entry") == 0 || strcmp(pureLabel, "extern" == 0))
+    if (strcmp(pureLabel, "data") == 0 || strcmp(pureLabel, "string") == 0 || strcmp(pureLabel, "entry") == 0 || strcmp(pureLabel, "extern") == 0)
     {
         return 0;
     }
@@ -82,9 +82,9 @@ void addLabel(char *label, int withColon, int address, int data, int external, i
     }
     else
     {
-        char *pureLabel = subString(label, strlen(label) - 1, label);
+        char *pureLabel = subString(0, strlen(label) - 1, label);
         labelList = (struct label *)myRealloc(labelList, (labelsCounter + 2) * sizeof(struct label));
-        labelList[labelsCounter].label = label;
+        labelList[labelsCounter].label = pureLabel;
         labelList[labelsCounter].address = address;
         labelList[labelsCounter].data = data;
         labelList[labelsCounter].external = external;
@@ -117,8 +117,8 @@ void makeTempLabelPermanent(int address, int data, int external, int entry)
 {
     /*garbage1 and garbage2 represent the lineNum and the error,
     since addTempLabel already checked if the label is valid addLabel will not use does variables */
-    int garbage1;
-    int garbage2;
+    int garbage1 = 0;
+    int garbage2 = 0;
     if (tempLabelExists)
     {
         addLabel(tempLabelLabel, tempLabelWithColon, address, data, external, entry, garbage1, &garbage2);

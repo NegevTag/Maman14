@@ -52,7 +52,7 @@ void addCommand(char *commandName, char *param1, char *param2, int lineNum, int 
     }
 }
 /*update all the commands that wasent completed in iteration 1, and filling .ext file and .ob file*/
-void updateCommands(int *error, char *fileName)
+void updateCommands(char *fileName,int *error)
 {
     int i;
     int reachedEnd = 0;
