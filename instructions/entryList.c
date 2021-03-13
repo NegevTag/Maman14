@@ -10,12 +10,12 @@ static struct entry
 static struct entry(*entryList);
 static int entryIndex = 0;
 /*add entry to the entry list*/
-void addEntry(char *label,int lineNumber)
+void addEntry(char *label,int lineNum)
 {
     /*allocate new memory for the entryList*/
     entryList = (struct entry *)myRealloc(entryList, (entryIndex + 2) * sizeof(struct entry));
     /*add entry to the list*/
-    entryList[entryIndex].lineNum = lineNumber;
+    entryList[entryIndex].lineNum = lineNum;
     /*there is no need to allocate memory for the string because substring allocate memory*/
     entryList[entryIndex].label = label;
     entryIndex++;

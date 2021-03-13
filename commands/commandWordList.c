@@ -3,9 +3,8 @@
 #include "header.h"
 #include "commandsHeader.h"
 /*represent word of code*/
-struct wordCommand
+static struct wordCommand
 {
-    /*TODO:consider changing the label by creating array of labels and indexes and lines*/
     unsigned int address;
     unsigned int machineCode : 12;
     unsigned int ARE : 3;
@@ -32,7 +31,7 @@ int getNumberOfCW()
 {
     return commandWordsCounter;
 }
-/*get the address of the next command word*/
+/*get the address of the next command word (that wasent enterd yet*/
 int getNextCWAddress()
 {
     return commandWordsCounter + FIRST_ADDRESS;
@@ -56,8 +55,42 @@ int getCWMachineCode(int address)
     }
     return commandWordList[address - FIRST_ADDRESS].machineCode;
 }
+/*change command word ARE to E return 1 if worked and error if not*/
+int changeCWToExternal(int address){
+    if(isValidAddress(address)){
+        commandWordList[address - FIRST_ADDRESS].ARE = us_binary_to_int("001");
+        return 1;
+    }
+    return 0;
+}
+/*get the representative string of the command by the output file format, return ERROR if not valid */
+int addCWRepresentativeStringToFile(FILE *f,int address){
+    char ARE = 0;
+    if (ARE == us_binary_to_int("001"))
+    {
+        ARE ='E';
+    }
+    if (ARE == us_binary_to_int("010"))
+    {
+        ARE ='R';
+    }
+    if (ARE == us_binary_to_int("100"))
+    {
+        ARE ='A';
+    }
+    
+    if (isValidAddress(address))
+    {
+        fprintf(f,"%d %x %c\n",commandWordList[address - FIRST_ADDRESS].address, commandWordList[address - FIRST_ADDRESS].machineCode,ARE);
+        return 1;
+    }
+    return ERROR;
+    
+    
+}
 /*check if adress is valid*/
 static int isValidAddress(int address)
 {
     return address >= FIRST_ADDRESS && address < commandWordsCounter + FIRST_ADDRESS;
 }
+

@@ -8,3 +8,10 @@ struct command
     unsigned int possibleInAddressing : 4;
     unsigned int possibleOutAddressing : 4;
 };
+struct labelParam
+{
+    char *name;    /*the name of the label*/
+    int codeAddress; /*the place it was shown in the code*/
+    int direct;    /*is it direct addressing(0 if it relative)*/
+    int lineNum;   /*the number of the line it is appeared in*/
+};

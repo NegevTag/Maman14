@@ -12,6 +12,7 @@ void updateEntryInstructions(char *fileName, int *error)
     char *entryLabel;
     int entryLabelAddress;
     int i = 0;
+    int emptyFile = 1;
     FILE *f = fopen(strcat(fileName, ".en"), 'w');
     if (!f)
     {
@@ -27,27 +28,45 @@ void updateEntryInstructions(char *fileName, int *error)
         {
             /*add the entry label to the file*/
             fprintf(f, "%s %d", entryLabel, lineNum);
+            emptyFile = 0;
         }
     }
     fclose(f);
-    /*if error accrued delete the file*/
-    if ((*error) ==ERROR)
+    /*if error accrued or the file is empty delete the file*/
+    if ((*error) == ERROR || emptyFile)
     {
         remove(strcat(fileName, ".en"));
     }
-
 }
-int getInstructionsWordsCount()
+/*append instruction to the output file*/
+void appendInstructionToOutput(char *fileName, int *error)
 {
+    int i;
+    FILE *ob = fopen(strcmp(fileName, ".ob"), 'a');
+    if (!(*error) != ERROR)
+    {
+
+        if (!ob)
+        {
+            printf("Error: could not open file\n", fileName);
+            (*error) = ERROR;
+            return;
+        }
+        for (i = 0; i < getNumberOfIW(); i++)
+        {
+
+            addIWRepresentativeStringToFile(ob, i);
+        }
+    }
 }
 /*adding e instruction (entry or external) the instruction*/
-void addEInstruction(char *instruction, char *param, int lineNumber, int *error)
+void addEInstruction(char *instruction, char *param, int lineNum, int *error)
 {
     /*if instruction is extern add param to labels*/
     if (strcmp(instruction, ".extern") == 0)
     {
         int tempError = 0;
-        addLabel(param, 0, 0, 1, 1, 0, lineNumber, error);
+        addLabel(param, 0, 0, 1, 1, 0, lineNum, error);
         return;
     }
     /*if instruction is entry add the param to to enterylist*/
@@ -55,31 +74,31 @@ void addEInstruction(char *instruction, char *param, int lineNumber, int *error)
     {
         if (!isValidLabel(param, 0))
         {
-            printf("Error: line %d, invalid label", lineNumber);
+            printf("Error: line %d, invalid label", lineNum);
             (*error) = ERROR;
             return;
         }
         else
         {
-            addEntry(instruction, lineNumber);
+            addEntry(instruction, lineNum);
         }
     }
     /*if the instruction is not valid print error*/
     else
     {
-        printf("Error:line %d, Instruction isn't valid", lineNumber);
+        printf("Error:line %d, Instruction isn't valid", lineNum);
         (*error) = ERROR;
         return;
     }
 }
 
-void addDataInstruction(char *instruction, int params[], int numberOfParams, int lineNumber, int *error)
+void addDataInstruction(char *instruction, int params[], int numberOfParams, int lineNum, int *error)
 {
     int i;
     /*checking that the instruction is correct*/
     if (strcmp(".data", instruction) != 0)
     {
-        printf("Error:line %d, Instruction isn't valid", lineNumber);
+        printf("Error:line %d, Instruction isn't valid", lineNum);
         (*error) = ERROR;
         return;
     }
@@ -88,7 +107,7 @@ void addDataInstruction(char *instruction, int params[], int numberOfParams, int
     {
         if (isValidNumber(params[i]))
         {
-            printf("Error: line %d, number is out of limits", lineNumber);
+            printf("Error: line %d, number is out of limits", lineNum);
             (*error) = ERROR;
             return;
         }
@@ -99,7 +118,7 @@ void addDataInstruction(char *instruction, int params[], int numberOfParams, int
     }
 }
 /* add the string instruction (and checking that it is string instruction)*/
-void addStringInstruction(char *instruction, char *param, int lineNumber, int *error)
+void addStringInstruction(char *instruction, char *param, int lineNum, int *error)
 {
     int i;
     int length = strlen(param);
@@ -107,14 +126,14 @@ void addStringInstruction(char *instruction, char *param, int lineNumber, int *e
     /*checking that the instruction is valid*/
     if (strcmp(".string", instruction) != 0)
     {
-        printf("Error:line %d, Instruction isn't valid", lineNumber);
+        printf("Error:line %d, Instruction isn't valid", lineNum);
         (*error) = ERROR;
         return;
     }
     /*check that the last and first characters are*/
     if ((param[0] != STRING_SPECIFIER) || param[strlen(param) - 1] != STRING_SPECIFIER)
     {
-        printf("Error: line %d, String must include \" at the start and \" at the end", lineNumber);
+        printf("Error: line %d, String must include \" at the start and \" at the end", lineNum);
         (*error) = ERROR;
         return;
     }

@@ -8,13 +8,13 @@ static struct label
     unsigned int data : 1;     /*1 if it is data, 0 if it is code*/
     unsigned int external : 1; /*1 if external, 0 otherwise*/
     unsigned int entry : 1;    /*1 if entry, 0 otherwise*/
-    unsigned int lineNumber;
+    unsigned int lineNum;
 };
 struct label *labelList;
 int labelsCounter = 0;
 int tempLabelExists = 0;
 char *tempLabelLabel;
-int tempLabelLineNumber;
+int tempLabellineNum;
 int tempLabelWithColon;
 /*initialize the entryList*/
 void initializelabelList()
@@ -72,29 +72,29 @@ int isDefinedLabel(char *purelabel)
     return 0;
 }
 /*add label to the label list, if it is not valid change error to ERROR*/
-void addLabel(char *label, int withColon, int address, int data, int external, int entry, int lineNumber, int *error)
+void addLabel(char *label, int withColon, int address, int data, int external, int entry, int lineNum, int *error)
 {
     if (!isValidLabel(label, withColon))
     {
-        printf("Error:line %d, label is not valid", lineNumber);
+        printf("Error:line %d, label is not valid", lineNum);
         (*error) = ERROR;
         return;
     }
     else
     {
         char *pureLabel = subString(label, strlen(label) - 1, label);
-        labelList = (struct labelParams *)myRealloc(labelList, (labelsCounter + 2) * sizeof(struct label));
+        labelList = (struct label *)myRealloc(labelList, (labelsCounter + 2) * sizeof(struct label));
         labelList[labelsCounter].label = label;
         labelList[labelsCounter].address = address;
         labelList[labelsCounter].data = data;
         labelList[labelsCounter].external = external;
         labelList[labelsCounter].entry = entry;
-        labelList[labelsCounter].lineNumber = lineNumber;
+        labelList[labelsCounter].lineNum = lineNum;
         labelsCounter++;
     }
 }
 /*add temporary label, will be overwritten by the next call*/
-void addTempLabel(char *label, int lineNumber, int *error, int withColon)
+void addTempLabel(char *label, int lineNum, int *error, int withColon)
 {
     if (!isValidLabel(label, withColon))
     {
@@ -103,7 +103,7 @@ void addTempLabel(char *label, int lineNumber, int *error, int withColon)
     }
     tempLabelExists = 1;
     tempLabelLabel = label;
-    tempLabelLineNumber = lineNumber;
+    tempLabellineNum = lineNum;
     tempLabelWithColon = withColon;
 }
 /*remove temporary label*/
@@ -115,7 +115,7 @@ void removeTempLabel()
 /*if temporary label exist make the temporary label permanent, otherwise does nothing */
 void makeTempLabelPermanent(int address, int data, int external, int entry)
 {
-    /*garbage1 and garbage2 represent the lineNumber and the error,
+    /*garbage1 and garbage2 represent the lineNum and the error,
     since addTempLabel already checked if the label is valid addLabel will not use does variables */
     int garbage1;
     int garbage2;
@@ -135,7 +135,7 @@ void updateLabels()
     {
         if (labelList[i].data == 1)
         {
-            /*if the label is extrnal it shouldnt be updated*/
+            /*if the label is external it shouldnt be updated*/
             if (labelList[i].external == 0)
             {
                 labelList[i].address += getNextCWAddress();
@@ -144,32 +144,45 @@ void updateLabels()
     }
 }
 /*set label to entry, if label not exist or label is entry print the error and change error to ERROR, return the address of the label and ERROR if occurred */
-int setEntry(char *label, int lineNum, int *error){
+int setEntry(char *label, int lineNum, int *error)
+{
     int i;
     for (i = 0; i < labelsCounter; i++)
     {
-        if (labelList[i].label == label)
+        if (strcmp(labelList[i].label,label) == 0)
         {
+            /*internal lablel cant be external*/
             if (labelList[i].external == 1)
             {
                 printf("Error, line %d, label cannot be external and entry", lineNum);
                 (*error) = ERROR;
                 return ERROR;
-            }else
+            }
+            else
             {
                 labelList[i].entry = 1;
                 return labelList[i].address;
             }
-            
-            
         }
-        
     }
     printf("Error: line %d, entry label parameter wasent declared", lineNum);
     (*error) = ERROR;
     return ERROR;
-    
 }
-char *getInternalList()
+/*get address of specified label and change external to wether this label is extranl*/
+/*, if error occurred print it and change  *error to ERROR */
+int getLabelAddress(char *label, int *external, int lineNum, int *error)
 {
+    int i;
+    for (i = 0; i < labelsCounter; i++)
+    {
+        if (strcmp(labelList[i].label,label) == 0)
+        {
+            (*external) = labelList[i].external;
+            return labelList[i].address;
+        }
+    }
+    printf("Error: line %d, label parameter wasent declared", lineNum);
+    (*error) = ERROR;
+    return ERROR;
 }
