@@ -51,7 +51,7 @@ int isValidLabel(char *label, int withColon)
         return 0;
     }
     /*return true if everything above was ok and the first char is letter*/
-    if (!(label[0] <= 'z' && label[0] >= 'a') || (label[0] <= 'Z' && label[0] >= 'A'))
+    if (!((pureLabel[0] <= 'z' && pureLabel[0] >= 'a') || (pureLabel[0] <= 'Z' && pureLabel[0] >= 'A')))
     {
         return 0;
     }

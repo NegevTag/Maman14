@@ -22,6 +22,7 @@ char *subString(int start, int end, char *str)
 {
     /* allocate memory for the result*/
     char *result = (char *)myMalloc(sizeof(char) * (end - start));
+    int first = start;
     if (!result)
     {
         printf("Error: memory allocation failed");
@@ -30,10 +31,10 @@ char *subString(int start, int end, char *str)
 
     while (start < end)
     {
-        result[start] = str[start];
+        result[start - first] = str[start];
         start++;
     }
-    result[end] = '\0';
+    result[end - first] = '\0';
     return result;
 }
 int min(int x, int y)

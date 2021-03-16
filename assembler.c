@@ -16,9 +16,11 @@ void process(FILE *f, char *fileName)
     /*if error == 1 then error has accrued*/
     int error = 0;
     char line[MAX_LINE_LENGTH];
-    int lineNum = 1;
+    /*will increase to 1 in the loop*/
+    int lineNum = 0;
     while (fgets(line, MAX_LINE_LENGTH, f))
     {
+        lineNum++;
         int current;
         int afterWord;
         char *firstWord;
@@ -79,7 +81,6 @@ void process(FILE *f, char *fileName)
             readCommand(line, firstWord, afterWord, lineNum, &error);
             continue;
         }
-        lineNum++;
     }
     /* iteration 2*/
     if (error != ERROR)
@@ -302,10 +303,11 @@ static char *readWordParam(char *line, int *current, int lineNum, int *error, in
         return NULL;
     }
     afterParam = skipWord(index, line);
+    param = subString(index,afterParam,line);
     if (lastParam)
     {
-        index = skipTabsAndSpaces(index, line);
-        if (!checkEndOfLine(index, line))
+        afterParam = skipTabsAndSpaces(afterParam, line);
+        if (!checkEndOfLine(afterParam, line))
         {
             printf("Error: line %d, Extraneous text after instruction", lineNum);
             (*error) = ERROR;
@@ -313,6 +315,5 @@ static char *readWordParam(char *line, int *current, int lineNum, int *error, in
         }
     }
     (*current) = afterParam;
-    param = subString(index,afterParam,line);
     return param;
 }
