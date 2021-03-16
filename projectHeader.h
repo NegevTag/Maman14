@@ -44,9 +44,13 @@ void addEInstruction(char *instruction, char *param, int lineNum, int *error);
 void addDataInstruction(char *instruction, int params[], int numberOfParams, int lineNum, int *error);
 void addStringInstruction(char *instruction, char *param, int lineNum, int *error);
 void addCommand(char *commandName, char *param1, char *param2, int lineNum, int *error);
-void updateCommands(char *fileName,int *error);
+void updateCommands(char *fileName, int *error);
 int getNumberOfCW();
 int isCommandExist(char *commandName);
 int getNextCWAddress();
 int getNumberOfIW();
-
+void initializeCommands();
+void initializeLabelParamsList();
+void initializeEntryList();
+void initializelabelList();
+void process();

@@ -1,10 +1,10 @@
 /*processing file and creating the outputs files*/
 #include "projectHeader.h"
-static void readInstruction(char *instruction, int afterInstruction, char *line, int currentLine, int *error);
-static void readEInstruction(char *line, char *instruction, int afterInstruction, int currentLine, int *error);
-static void readDataInstruction(char *line, char *instruction, int afterInstruction, int currentLine, int *error);
-static int readStringInstruction(char *line, char *instruction, int afterInstruction, int currentLine, int *error);
-static void readCommand(char *line, char *command, int afterCommand, int currentLine, int *error);
+static void readInstruction(char *instruction, int afterInstruction, char *line, int lineNum, int *error);
+static void readEInstruction(char *line, char *instruction, int afterInstruction, int lineNum, int *error);
+static void readDataInstruction(char *line, char *instruction, int afterInstruction, int lineNum, int *error);
+static void readStringInstruction(char *line, char *instruction, int afterInstruction, int lineNum, int *error);
+static void readCommand(char *line, char *command, int afterCommand, int lineNum, int *error);
 static int skipTabsAndSpaces(int current, char str[]);
 static int skipWord(int current, char str[]);
 static int skipComma(int current, char str[]);
@@ -92,26 +92,26 @@ void process(FILE *f, char *fileName)
 }
 
 /*read instruction by letting readEInstruction or readAllocationInstruction to handle it */
-static void readInstruction(char *instruction, int afterInstruction, char *line, int currentLine, int *error)
+static void readInstruction(char *instruction, int afterInstruction, char *line, int lineNum, int *error)
 {
     /* if the instruction is external or entry read the instruction*/
     if (instruction[1] == 'e')
     {
-        readEInstruction(line, instruction, afterInstruction, currentLine, error);
+        readEInstruction(line, instruction, afterInstruction, lineNum, error);
     }
     /*if the instruction is data read it*/
     else if (instruction[1] == 'd')
     {
-        readDataInstruction(line, instruction, afterInstruction, currentLine, error);
+        readDataInstruction(line, instruction, afterInstruction, lineNum, error);
     }
     /*if the instruction is string read it*/
     else if (instruction[1] == 's')
     {
-        readStringInstruction(line, instruction, afterInstruction, currentLine, error);
+        readStringInstruction(line, instruction, afterInstruction, lineNum, error);
     }
     else
     {
-        printf("Error: line %d,instruction name is not valid", currentLine);
+        printf("Error: line %d,instruction name is not valid", lineNum);
         (*error) = ERROR;
         return;
     }
@@ -119,7 +119,7 @@ static void readInstruction(char *instruction, int afterInstruction, char *line,
 
 /*read e instruction (entry or external) - divide it to words and let instructions handler to handle it.
  change error to ERROR if syntex error accrued */
-static void readEInstruction(char *line, char *instruction, int afterInstruction, int currentLine, int *error)
+static void readEInstruction(char *line, char *instruction, int afterInstruction, int lineNum, int *error)
 {
     char *param;
     int current;
@@ -129,10 +129,10 @@ static void readEInstruction(char *line, char *instruction, int afterInstruction
     removeTempLabel();
     /*extract the paramter of the instruction from the line*/
     current = skipTabsAndSpaces(afterInstruction, line);
-    param = readWordParam(line, &current, currentLine, &currentError, 0);
+    param = readWordParam(line, &current, lineNum, &currentError, 0);
     if (!currentError)
     {
-        addEInstruction(instruction, param, currentLine, error);
+        addEInstruction(instruction, param, lineNum, error);
     }
     else
     {
@@ -142,7 +142,7 @@ static void readEInstruction(char *line, char *instruction, int afterInstruction
 
 /* read data instruction - calculate the parameters and let instructions handler to handle it, 
  change error to ERROR if syntex error accrued  */
-static void readDataInstruction(char *line, char *instruction, int afterInstruction, int currentLine, int *error)
+static void readDataInstruction(char *line, char *instruction, int afterInstruction, int lineNum, int *error)
 {
     int params[MAX_LINE_LENGTH];
     int numberOfParams = 1;
@@ -151,7 +151,6 @@ static void readDataInstruction(char *line, char *instruction, int afterInstruct
     int current = afterInstruction;
     int afterWord;
     int afterComma;
-    int finished = 0;
     /*making the temporary instruction parmenant becuase it will be used*/
     makeTempLabelPermanent(getNumberOfIW(), 1, 0, 0);
     /*add all parameters to the list*/
@@ -163,7 +162,7 @@ static void readDataInstruction(char *line, char *instruction, int afterInstruct
         indicate that ther is extraneous comma after the commandList*/
         if (checkEndOfLine(current, line))
         {
-            printf("Error:line %d, extraneous comma after parameters list", line);
+            printf("Error:line %d, extraneous comma after parameters list", lineNum);
             (*error) = ERROR;
             return;
         }
@@ -177,7 +176,7 @@ static void readDataInstruction(char *line, char *instruction, int afterInstruct
         {
             if (!checkIfZero(paramString))
             {
-                printf("Error: line %d, number is not valid", currentLine);
+                printf("Error: line %d, number is not valid", lineNum);
                 (*error) = ERROR;
                 return;
             }
@@ -189,29 +188,29 @@ static void readDataInstruction(char *line, char *instruction, int afterInstruct
     /*there is an edge case in which the end of the line comes right after the comma in which the loop will not notice that*/
     if (line[current - 1] == ',')
     {
-        printf("Error:line %d, extraneous comma after parameters list", line);
+        printf("Error:line %d, extraneous comma after parameters list", lineNum);
         (*error) = ERROR;
         return;
     }
-    addDataInstruction(instruction, params, numberOfParams, currentLine, *error);
+    addDataInstruction(instruction, params, numberOfParams, lineNum, error);
 }
 
 /* read string instruction - calculate the parameters and let instructions handler to handle it, 
  change error to ERROR if syntex error accrued  */
-static int readStringInstruction(char *line, char *instruction, int afterInstruction, int currentLine, int *error)
+static void readStringInstruction(char *line, char *instruction, int afterInstruction, int lineNum, int *error)
 {
     char *param;
     int current;
     int currentError = 0;
     /*making the temporary instruction parmenant becuase it will be used*/
-    makeTempLabelPermanent(getInstructionsWordsCount(), 1, 0, 0);
+    makeTempLabelPermanent(getNumberOfIW(), 1, 0, 0);
 
     /*extract the paramter of the instruction from the line*/
     current = skipTabsAndSpaces(afterInstruction, line);
-    param = readWordParam(line, current, currentLine, &currentError, 0);
+    param = readWordParam(line, &current, lineNum, &currentError,0 );
     if (!currentError)
     {
-        addEInstruction(instruction, param, currentLine, error);
+        addEInstruction(instruction, param, lineNum, error);
     }
     else
     {
@@ -219,16 +218,16 @@ static int readStringInstruction(char *line, char *instruction, int afterInstruc
     }
 }
 /*read command - divide it to words and let command handler to handle it */
-static void readCommand(char *line, char *command, int afterCommand, int currentLine, int *error)
+static void readCommand(char *line, char *command, int afterCommand, int lineNum, int *error)
 {
-    char *param1;
-    char *param2;
+    char *param1 = NULL;
+    char *param2 = NULL;
     int current;
     int afterComma;
     int afterWord;
     int currentError = 0;
     /*making the temporary instruction parmenant becuase it will be used*/
-    makeTempLabelPermanent(getInstructionsWordsCount(), 0, 0, 0);
+    makeTempLabelPermanent(getNumberOfIW(), 0, 0, 0);
     /*reading the command first parameter*/
     current = skipTabsAndSpaces(current, line);
     afterComma = skipComma(current, line);
@@ -238,12 +237,12 @@ static void readCommand(char *line, char *command, int afterCommand, int current
     /*if reached end of line there is only one parameter*/
     if (checkEndOfLine(current, line))
     {
-        addCommand(command, param1, param2, currentLine, error);
+        addCommand(command, param1, param2, lineNum, error);
     }
-    param2 = readWordParam(line, current, currentLine, currentError, 1);
+    param2 = readWordParam(line, &current, lineNum, &currentError, 1);
     if (!currentError)
     {
-        addCommand(command, param1, param2, currentLine, error);
+        addCommand(command, param1, param2, lineNum, error);
     }
     else
     {
@@ -264,7 +263,7 @@ static int skipTabsAndSpaces(int current, char str[])
 /*return the first index after word*/
 static int skipWord(int current, char str[])
 {
-    while (str[current] != " " && str[current] != "\t" && str[current] != "\n" && str[current] != "\0")
+    while (str[current] != ' ' && str[current] != '\t' && str[current] != '\n' && str[current] != '\0' )
     {
         current++;
     }
