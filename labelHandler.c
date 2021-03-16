@@ -82,7 +82,11 @@ void addLabel(char *label, int withColon, int address, int data, int external, i
     }
     else
     {
-        char *pureLabel = subString(0, strlen(label) - 1, label);
+        char *pureLabel = label;
+        if (withColon)
+        {
+            pureLabel = subString(0, strlen(label) - 1, label);
+        }
         labelList = (struct label *)myRealloc(labelList, (labelsCounter + 2) * sizeof(struct label));
         labelList[labelsCounter].label = pureLabel;
         labelList[labelsCounter].address = address;

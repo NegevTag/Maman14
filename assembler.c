@@ -20,12 +20,12 @@ void process(FILE *f, char *fileName)
     int lineNum = 0;
     while (fgets(line, MAX_LINE_LENGTH, f))
     {
-        lineNum++;
         int current;
         int afterWord;
         char *firstWord;
         char *secondWord;
         int tempError = 0;
+        lineNum++;
         current = skipTabsAndSpaces(0, line);
         /*if line is comment skip to the next line*/
         if (line[current] == COMMENT_SPECIFIER)
@@ -78,7 +78,7 @@ void process(FILE *f, char *fileName)
         /* if the second word is not instruction it is command, read it and move to the next line*/
         else
         {
-            readCommand(line, firstWord, afterWord, lineNum, &error);
+            readCommand(line, secondWord, afterWord, lineNum, &error);
             continue;
         }
     }
@@ -231,7 +231,7 @@ static void readCommand(char *line, char *command, int afterCommand, int lineNum
     /*making the temporary instruction parmenant becuase it will be used*/
     makeTempLabelPermanent(getNumberOfIW(), 0, 0, 0);
     /*reading the command first parameter*/
-    current = skipTabsAndSpaces(current, line);
+    current = skipTabsAndSpaces(afterCommand, line);
     afterComma = skipComma(current, line);
     afterWord = skipWord(current, line);
     param1 = subString(current, min(afterComma - 1, afterWord), line);

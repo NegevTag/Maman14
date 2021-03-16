@@ -29,8 +29,8 @@ void addCommand(char *commandName, char *param1, char *param2, int lineNum, int 
     }
     /*add the opcode the address and the ARE of the current command of the command*/
     machineCode = 0;
-    machineCode = (thisCom.opcode << 4) + thisCom.funct;
-    machineCode <<= 8;
+    machineCode = (thisCom.opcode << 4) + thisCom.funct;;
+    machineCode <<= 4;
     commandAdress = getNextCWAddress();
     addCW(machineCode, us_binary_to_int("100"));
     /**add words that represent the parmater*/
@@ -52,7 +52,7 @@ void addCommand(char *commandName, char *param1, char *param2, int lineNum, int 
     }
 }
 /*update all the commands that wasent completed in iteration 1, and filling .ext file and .ob file*/
-void updateCommands(char *fileName,int *error)
+void updateCommands(char *fileName, int *error)
 {
     int i;
     int reachedEnd = 0;
