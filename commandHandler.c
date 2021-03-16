@@ -23,7 +23,7 @@ void addCommand(char *commandName, char *param1, char *param2, int lineNum, int 
     thisCom = getCommand(commandName, &currentError);
     if (currentError == ERROR)
     {
-        printf("Error:line %d, command name is not a valid", lineNum);
+        printf("Error:line %d, command name is not a valid\n", lineNum);
         (*error) = ERROR;
         return;
     }
@@ -181,7 +181,7 @@ static void handleParam(int isInputParam, char *param, int commandWordAddress, i
             return;
         }
     }
-    printf("Error: line %d, parameter is not valid", lineNum);
+    printf("Error: line %d, parameter is not valid\n", lineNum);
     (*error) = ERROR;
 }
 /*checking if the parameter is in the direct addressing format*/
@@ -216,7 +216,7 @@ static void handleImmidiate(char *param, int lineNum, int *error)
     if the number is not zero checking that it in the ranges*/
     if ((number == 0 && !checkIfZero(numberStr)) || !isValidNumber(number))
     {
-        printf("Error: line %d, number is not valid", lineNum);
+        printf("Error: line %d, number is not valid\n", lineNum);
         (*error) = ERROR;
         return;
     }

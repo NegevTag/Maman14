@@ -71,7 +71,7 @@ void addEInstruction(char *instruction, char *param, int lineNum, int *error)
     {
         if (!isValidLabel(param, 0))
         {
-            printf("Error: line %d, invalid label", lineNum);
+            printf("Error: line %d, invalid label\n", lineNum);
             (*error) = ERROR;
             return;
         }
@@ -83,7 +83,7 @@ void addEInstruction(char *instruction, char *param, int lineNum, int *error)
     /*if the instruction is not valid print error*/
     else
     {
-        printf("Error:line %d, Instruction isn't valid", lineNum);
+        printf("Error:line %d, Instruction isn't valid\n", lineNum);
         (*error) = ERROR;
         return;
     }
@@ -95,7 +95,7 @@ void addDataInstruction(char *instruction, int params[], int numberOfParams, int
     /*checking that the instruction is correct*/
     if (strcmp(".data", instruction) != 0)
     {
-        printf("Error:line %d, Instruction isn't valid", lineNum);
+        printf("Error:line %d, Instruction isn't valid\n", lineNum);
         (*error) = ERROR;
         return;
     }
@@ -104,7 +104,7 @@ void addDataInstruction(char *instruction, int params[], int numberOfParams, int
     {
         if (isValidNumber(params[i]))
         {
-            printf("Error: line %d, number is out of limits", lineNum);
+            printf("Error: line %d, number is out of limits\n", lineNum);
             (*error) = ERROR;
             return;
         }
@@ -123,14 +123,14 @@ void addStringInstruction(char *instruction, char *param, int lineNum, int *erro
     /*checking that the instruction is valid*/
     if (strcmp(".string", instruction) != 0)
     {
-        printf("Error:line %d, Instruction isn't valid", lineNum);
+        printf("Error:line %d, Instruction isn't valid\n", lineNum);
         (*error) = ERROR;
         return;
     }
     /*check that the last and first characters are*/
     if ((param[0] != STRING_SPECIFIER) || param[strlen(param) - 1] != STRING_SPECIFIER)
     {
-        printf("Error: line %d, String must include \" at the start and \" at the end", lineNum);
+        printf("Error: line %d, String must include \" at the start and \" at the end\n", lineNum);
         (*error) = ERROR;
         return;
     }

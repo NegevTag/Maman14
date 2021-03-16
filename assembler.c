@@ -64,7 +64,7 @@ void process(FILE *f, char *fileName)
         if (checkEndOfLine(current, line))
         {
             error = ERROR;
-            printf("Error: line %d, line must contain command or instruction",lineNum);
+            printf("Error: line %d, line must contain command or instruction\n",lineNum);
             continue;
         }
         afterWord = skipWord(current, line);
@@ -113,7 +113,7 @@ static void readInstruction(char *instruction, int afterInstruction, char *line,
     }
     else
     {
-        printf("Error: line %d,instruction name is not valid", lineNum);
+        printf("Error: line %d,instruction name is not valid\n", lineNum);
         (*error) = ERROR;
         return;
     }
@@ -164,7 +164,7 @@ static void readDataInstruction(char *line, char *instruction, int afterInstruct
         indicate that ther is extraneous comma after the commandList*/
         if (checkEndOfLine(current, line))
         {
-            printf("Error:line %d, extraneous comma after parameters list", lineNum);
+            printf("Error:line %d, extraneous comma after parameters list\n", lineNum);
             (*error) = ERROR;
             return;
         }
@@ -178,7 +178,7 @@ static void readDataInstruction(char *line, char *instruction, int afterInstruct
         {
             if (!checkIfZero(paramString))
             {
-                printf("Error: line %d, number is not valid", lineNum);
+                printf("Error: line %d, number is not valid\n", lineNum);
                 (*error) = ERROR;
                 return;
             }
@@ -190,7 +190,7 @@ static void readDataInstruction(char *line, char *instruction, int afterInstruct
     /*there is an edge case in which the end of the line comes right after the comma in which the loop will not notice that*/
     if (line[current - 1] == ',')
     {
-        printf("Error:line %d, extraneous comma after parameters list", lineNum);
+        printf("Error:line %d, extraneous comma after parameters list\n", lineNum);
         (*error) = ERROR;
         return;
     }
@@ -298,7 +298,7 @@ static char *readWordParam(char *line, int *current, int lineNum, int *error, in
     int index = skipTabsAndSpaces(*current, line);
     if (checkEndOfLine(index, line))
     {
-        printf("Error: line %d, No argument was received", lineNum);
+        printf("Error: line %d, No argument was received\n", lineNum);
         (*error) = ERROR;
         return NULL;
     }
@@ -309,7 +309,7 @@ static char *readWordParam(char *line, int *current, int lineNum, int *error, in
         afterParam = skipTabsAndSpaces(afterParam, line);
         if (!checkEndOfLine(afterParam, line))
         {
-            printf("Error: line %d, Extraneous text after instruction", lineNum);
+            printf("Error: line %d, Extraneous text after instruction\n", lineNum);
             (*error) = ERROR;
             return NULL;
         }

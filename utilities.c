@@ -25,7 +25,7 @@ char *subString(int start, int end, char *str)
     int first = start;
     if (!result)
     {
-        printf("Error: memory allocation failed");
+        printf("Error: memory allocation failed\n");
         exit(1);
     }
 
@@ -47,7 +47,7 @@ void *myMalloc(int size)
     void *result = malloc(size);
     if (!result)
     {
-        printf("Error: memory allocation failed");
+        printf("Error: memory allocation failed\n");
         exit(0);
     }
     return result;
@@ -59,7 +59,7 @@ void *myRealloc(void *ptr, int size)
     void *temp = realloc(ptr, size);
     if (!temp)
     {
-        printf("Error: memory allocation failed");
+        printf("Error: memory allocation failed\n");
         exit(0);
     }
     return temp;

@@ -76,7 +76,7 @@ void addLabel(char *label, int withColon, int address, int data, int external, i
 {
     if (!isValidLabel(label, withColon))
     {
-        printf("Error:line %d, label is not valid", lineNum);
+        printf("Error:line %d, label is not valid\n", lineNum);
         (*error) = ERROR;
         return;
     }
@@ -169,7 +169,7 @@ int setEntry(char *label, int lineNum, int *error)
             }
         }
     }
-    printf("Error: line %d, entry label parameter wasent declared", lineNum);
+    printf("Error: line %d, entry label parameter wasent declared\n", lineNum);
     (*error) = ERROR;
     return ERROR;
 }
@@ -186,7 +186,7 @@ int getLabelAddress(char *label, int *external, int lineNum, int *error)
             return labelList[i].address;
         }
     }
-    printf("Error: line %d, label parameter wasent declared", lineNum);
+    printf("Error: line %d, label parameter wasent declared\n", lineNum);
     (*error) = ERROR;
     return ERROR;
 }
