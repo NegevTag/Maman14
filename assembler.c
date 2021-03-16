@@ -26,7 +26,7 @@ void process(FILE *f, char *fileName)
         int tempError = 0;
         current = skipTabsAndSpaces(0, line);
         /*if line is comment skip to the next line*/
-        if (current == COMMENT_SPECIFIER)
+        if (line[current] == COMMENT_SPECIFIER)
         {
             continue;
         }
@@ -45,7 +45,8 @@ void process(FILE *f, char *fileName)
         /*if the first word is instruction read it and move to the next line*/
         else if (firstWord[0] == INSTRUCTION_SPECIFIER)
         {
-            readInstruction(firstWord, current, line, lineNum, &error);
+            readInstruction(firstWord, afterWord, line, lineNum, &error);
+            continue;
         }
         /*if the first word is not instruction and not label it is command.
          read the command and then move to the next line*/

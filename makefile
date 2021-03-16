@@ -54,7 +54,9 @@ main.o: main.c projectHeader.h
 
 	gcc -c -ansi -Wall -pedantic main.c -o main.o 2>> errors.txt
 
+debugable: commandHandler.c commandList.c commandWordList.c labelParamsList.c instructionHandler.c entryList.c instructionWordsList.c labelHandler.c assembler.c utilities.c main.c
 
+	gcc -g -ansi -Wall -pedantic commandHandler.c commandList.c commandWordList.c labelParamsList.c instructionHandler.c entryList.c instructionWordsList.c labelHandler.c assembler.c utilities.c main.c -o debugable 2>> errors.txt
 
 
 
