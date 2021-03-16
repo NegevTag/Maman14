@@ -130,7 +130,7 @@ static void readEInstruction(char *line, char *instruction, int afterInstruction
     removeTempLabel();
     /*extract the paramter of the instruction from the line*/
     current = skipTabsAndSpaces(afterInstruction, line);
-    param = readWordParam(line, &current, lineNum, &currentError, 0);
+    param = readWordParam(line, &current, lineNum, &currentError, 1);
     if (!currentError)
     {
         addEInstruction(instruction, param, lineNum, error);
@@ -291,7 +291,7 @@ static int checkEndOfLine(int current, char *str)
 last param should be 1 if this paramter is the last and 0 if isnt */
 static char *readWordParam(char *line, int *current, int lineNum, int *error, int lastParam)
 {
-    char *param = (char *)myMalloc(sizeof(char) * MAX_LINE_LENGTH);
+    char *param;
     int afterParam;
     /*extract the paramter of the instruction from the line*/
     int index = skipTabsAndSpaces(*current, line);
@@ -313,5 +313,6 @@ static char *readWordParam(char *line, int *current, int lineNum, int *error, in
         }
     }
     (*current) = afterParam;
+    param = subString(index,afterParam,line);
     return param;
 }
