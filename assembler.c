@@ -10,7 +10,6 @@ static int skipWord(int current, char str[]);
 static int skipComma(int current, char str[]);
 static int checkEndOfLine(int current, char *str);
 static char *readWordParam(char *line, int *current, int lineNum, int *error, int lastParam);
-
 void process(FILE *f, char *fileName)
 {
     /*if error == 1 then error has accrued*/
@@ -57,14 +56,13 @@ void process(FILE *f, char *fileName)
             readCommand(line, firstWord, afterWord, lineNum, &error);
             continue;
         }
-
         /*if the code reaches here it means that the first word is label*/
         current = skipTabsAndSpaces(afterWord, line);
         /*if reached end of line print error*/
         if (checkEndOfLine(current, line))
         {
             error = ERROR;
-            printf("Error: line %d, line must contain command or instruction\n",lineNum);
+            printf("Error: line %d, line must contain command or instruction\n", lineNum);
             continue;
         }
         afterWord = skipWord(current, line);
@@ -89,10 +87,9 @@ void process(FILE *f, char *fileName)
         updateEntryInstructions(fileName, &error);
         /*not checking if error occurred becuase even if error occurred other errorors should be reported*/
         updateCommands(fileName, &error);
-        appendInstructionToOutput(fileName,&error);
+        appendInstructionToOutput(fileName, &error);
     }
 }
-
 /*read instruction by letting readEInstruction or readAllocationInstruction to handle it */
 static void readInstruction(char *instruction, int afterInstruction, char *line, int lineNum, int *error)
 {
@@ -126,7 +123,6 @@ static void readEInstruction(char *line, char *instruction, int afterInstruction
     char *param;
     int current;
     int currentError = 0;
-
     /*entry and external should ignore labels*/
     removeTempLabel();
     /*extract the paramter of the instruction from the line*/
@@ -206,10 +202,9 @@ static void readStringInstruction(char *line, char *instruction, int afterInstru
     int currentError = 0;
     /*making the temporary instruction parmenant becuase it will be used*/
     makeTempLabelPermanent(getNumberOfIW(), 1, 0, 0);
-
     /*extract the paramter of the instruction from the line*/
     current = skipTabsAndSpaces(afterInstruction, line);
-    param = readWordParam(line, &current, lineNum, &currentError,0 );
+    param = readWordParam(line, &current, lineNum, &currentError, 0);
     if (!currentError)
     {
         addEInstruction(instruction, param, lineNum, error);
@@ -240,6 +235,7 @@ static void readCommand(char *line, char *command, int afterCommand, int lineNum
     if (checkEndOfLine(current, line))
     {
         addCommand(command, param1, param2, lineNum, error);
+        return;
     }
     param2 = readWordParam(line, &current, lineNum, &currentError, 1);
     if (!currentError)
@@ -265,7 +261,7 @@ static int skipTabsAndSpaces(int current, char str[])
 /*return the first index after word*/
 static int skipWord(int current, char str[])
 {
-    while (str[current] != ' ' && str[current] != '\t' && str[current] != '\n' && str[current] != '\0' )
+    while (str[current] != ' ' && str[current] != '\t' && str[current] != '\n' && str[current] != '\0')
     {
         current++;
     }
@@ -303,7 +299,7 @@ static char *readWordParam(char *line, int *current, int lineNum, int *error, in
         return NULL;
     }
     afterParam = skipWord(index, line);
-    param = subString(index,afterParam,line);
+    param = subString(index, afterParam, line);
     if (lastParam)
     {
         afterParam = skipTabsAndSpaces(afterParam, line);
