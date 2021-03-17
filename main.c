@@ -35,8 +35,9 @@ int main(int argc, char *argv[])
             else
             {
                 process(f, argv[i]);
+                fclose(f);
             }
-            fclose(f);
+            
         }
     }
     return 0;

@@ -29,7 +29,8 @@ void addCommand(char *commandName, char *param1, char *param2, int lineNum, int 
     }
     /*add the opcode the address and the ARE of the current command of the command*/
     machineCode = 0;
-    machineCode = (thisCom.opcode << 4) + thisCom.funct;;
+    machineCode = (thisCom.opcode << 4) + thisCom.funct;
+    ;
     machineCode <<= 4;
     commandAdress = getNextCWAddress();
     addCW(machineCode, us_binary_to_int("100"));
@@ -63,10 +64,10 @@ void updateCommands(char *fileName, int *error)
     char obName[MAX_FILE_NAME_LENGTH + 3];
     FILE *ext;
     FILE *ob;
-    strcpy(extName,fileName);
-    strcpy(obName,fileName);
-    strcat(extName,".ext");
-    strcat(obName,".ob");
+    strcpy(extName, fileName);
+    strcpy(obName, fileName);
+    strcat(extName, ".ext");
+    strcat(obName, ".ob");
     ext = fopen(extName, "wt");
     ob = fopen(obName, "wt");
     if (!ob || !ext)
@@ -74,7 +75,9 @@ void updateCommands(char *fileName, int *error)
         printf("Error: could not open file\n");
         (*error) = ERROR;
         return;
-    }  
+    }
+    /*print the first line to the obj file*/
+    fprintf(ob, "\t%d %d\n", getNumberOfCW(), getNumberOfIW());
     nextLabelParam = getNextLabelParam(&reachedEnd);
     /*for each command word update if it is include label parameter and print the output to the file*/
     for (i = 0; i < getNumberOfCW(); i++)
@@ -127,13 +130,12 @@ static void handleParam(int isInputParam, char *param, int commandWordAddress, i
     /*if the command should not receive any parameters check that the parameter is empty */
     if (possibleAddressing == 0)
     {
-        if (strlen(param)!=0)
+        if (strlen(param) != 0)
         {
-            printf("Error:line %d, command should not receive any parameters \n",lineNum);
-            (*error) =ERROR;
+            printf("Error:line %d, command should not receive any parameters \n", lineNum);
+            (*error) = ERROR;
         }
         return;
-        
     }
     /*if it could be in immidiate addressing*/
     if (us_binary_to_int("0001") & possibleAddressing)
@@ -200,8 +202,7 @@ static void handleParam(int isInputParam, char *param, int commandWordAddress, i
             return;
         }
     }
-    
-    
+
     printf("Error: line %d, parameter is not valid\n", lineNum);
     (*error) = ERROR;
 }
@@ -218,12 +219,12 @@ static int checkIfRelative(char *param)
 /*checking if the parameter is in the register direct addressing format*/
 static int checkIfRegisterDirect(char *param)
 {
-    return strlen(param) == 2 && param[0] == 'r' && (param[1] - '0') >= 0 && (param[1]-'0') <= MAX_REGISTER;
+    return strlen(param) == 2 && param[0] == 'r' && (param[1] - '0') >= 0 && (param[1] - '0') <= MAX_REGISTER;
 }
 /*checking if the parameter is in the direct addressing format*/
 static int checkIfDirect(char *param)
 {
-    return isValidLabel(param, 0,1);
+    return isValidLabel(param, 0, 1);
 }
 
 /*handle immidiate parameter, by adding it to the commandWordList if everything is ok , assuming that it is immidiate parameter*/
@@ -247,7 +248,7 @@ static void handleImmidiate(char *param, int lineNum, int *error)
  assuming that it is direct parameter*/
 static void handleRelative(char *param, int lineNum, int *error)
 {
-    char * labelParam = subString(1,strlen(param),param);
+    char *labelParam = subString(1, strlen(param), param);
     addLabelParam(labelParam, 0, lineNum);
 }
 /*handle register direct parameter, by adding it to the commandWordList if everything is ok , assuming that it is register direct parameter*/

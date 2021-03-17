@@ -86,7 +86,7 @@ int addCWRepresentativeStringToFile(FILE *f, int address)
             ARE = 'A';
         }
 
-        fprintf(f, "%d %04X %c\n", commandWordList[address - FIRST_ADDRESS].address, commandWordList[address - FIRST_ADDRESS].machineCode, ARE);
+        fprintf(f, "%d %03X %c\n", address, commandWordList[address - FIRST_ADDRESS].machineCode, ARE);
         return 1;
     }
     return ERROR;

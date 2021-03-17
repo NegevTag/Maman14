@@ -14,7 +14,7 @@ void updateEntryInstructions(char *fileName, int *error)
     char enName[MAX_FILE_NAME_LENGTH + 4];
     FILE *f;
     strcpy(enName, fileName);
-    strcat(enName,".en");
+    strcat(enName,".ent");
     f = fopen(enName, "wt");
     if (!f)
     {
