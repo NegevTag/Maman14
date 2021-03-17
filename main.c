@@ -12,6 +12,7 @@ int main(int argc, char *argv[])
 {
     int i;
     FILE *f;
+    char  asFileName[MAX_FILE_NAME_LENGTH + 3];
     initializeCommands();
     if (argc == 1)
     {
@@ -24,7 +25,9 @@ int main(int argc, char *argv[])
             initializeLabelParamsList();
             initializeEntryList();
             initializelabelList();
-            f = fopen(strcat(argv[i], ".as"), "r");
+            strcpy(asFileName, argv[i]);
+            strcat(asFileName,".as");
+            f = fopen(asFileName, "rt");
             if (!f)
             {
                 printf("Error: could not open file %s.as \n", argv[i]);

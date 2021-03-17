@@ -11,7 +11,11 @@ void updateEntryInstructions(char *fileName, int *error)
     int entryLabelAddress;
     int i = 0;
     int emptyFile = 1;
-    FILE *f = fopen(strcat(fileName, ".en"), "w");
+    char enName[MAX_FILE_NAME_LENGTH + 4];
+    FILE *f;
+    strcpy(enName, fileName);
+    strcat(enName,".en");
+    f = fopen(enName, "wt");
     if (!f)
     {
         printf("Error: could not open file\n");
@@ -25,7 +29,7 @@ void updateEntryInstructions(char *fileName, int *error)
         if ((*error) != ERROR)
         {
             /*add the entry label to the file*/
-            fprintf(f, "%s %d", entryLabel, entryLabelAddress);
+            fprintf(f, "%s %d\n", entryLabel, entryLabelAddress);
             emptyFile = 0;
         }
         i++;
@@ -34,14 +38,18 @@ void updateEntryInstructions(char *fileName, int *error)
     /*if error accrued or the file is empty delete the file*/
     if ((*error) == ERROR || emptyFile)
     {
-        remove(strcat(fileName, ".en"));
+        remove(enName);
     }
 }
 /*append instruction to the output file*/
 void appendInstructionToOutput(char *fileName, int *error)
 {
     int i;
-    FILE *ob = fopen(strcat(fileName, ".ob"), "a");
+    char obName[MAX_FILE_NAME_LENGTH + 3];
+    FILE *ob;
+    strcpy(obName,fileName);
+    strcat(obName,".ob");
+    ob = fopen(obName, "at");
     if ((*error) != ERROR)
     {
 

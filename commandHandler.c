@@ -59,14 +59,22 @@ void updateCommands(char *fileName, int *error)
     int external = 0;
     int extEmpty = 1;
     struct labelParam nextLabelParam;
-    FILE *ext = fopen(strcat(fileName, ".ext"), "w");
-    FILE *ob = fopen(strcat(fileName, ".ob"), "w");
+    char extName[MAX_FILE_NAME_LENGTH + 4];
+    char obName[MAX_FILE_NAME_LENGTH + 3];
+    FILE *ext;
+    FILE *ob;
+    strcpy(extName,fileName);
+    strcpy(obName,fileName);
+    strcat(extName,".ext");
+    strcat(obName,".ob");
+    ext = fopen(extName, "wt");
+    ob = fopen(obName, "wt");
     if (!ob || !ext)
     {
         printf("Error: could not open file\n");
         (*error) = ERROR;
         return;
-    }
+    }  
     nextLabelParam = getNextLabelParam(&reachedEnd);
     /*for each command word update if it is include label parameter and print the output to the file*/
     for (i = 0; i < getNumberOfCW(); i++)
@@ -85,7 +93,7 @@ void updateCommands(char *fileName, int *error)
                 extEmpty = 0;
                 if (*error != ERROR)
                 {
-                    fprintf(ext, "%s %d", nextLabelParam.name, nextLabelParam.codeAddress);
+                    fprintf(ext, "%s %d\n", nextLabelParam.name, nextLabelParam.codeAddress);
                 }
             }
             /*set the machine code of the word that represent the parameter to the parameter address */
@@ -100,14 +108,14 @@ void updateCommands(char *fileName, int *error)
     fclose(ob);
     fclose(ext);
     /*if error occurred deletd file*/
-    if ((*error = ERROR))
+    if ((*error == ERROR))
     {
-        remove(strcat(fileName, ".en"));
-        remove(strcat(fileName, ".ob"));
+        remove(extName);
+        remove(obName);
     }
     else if (extEmpty)
     {
-        remove(strcat(fileName, ".en"));
+        remove(extName);
     }
 }
 

@@ -20,23 +20,23 @@ void addWord(int machineCode, int ARE)
 /*add the representative string of the command by the output file format, return ERROR if not valid */
 int addIWRepresentativeStringToFile(FILE *f, int index)
 {
-    char ARE = 0;
-    if (ARE == us_binary_to_int("001"))
-    {
-        ARE = 'E';
-    }
-    if (ARE == us_binary_to_int("010"))
-    {
-        ARE = 'R';
-    }
-    if (ARE == us_binary_to_int("100"))
-    {
-        ARE = 'A';
-    }
-
     if (index >= 0 && index < instructionWordsCounter)
     {
-        fprintf(f, "%d %x %c\n", index + getNumberOfCW() + FIRST_ADDRESS, instructionWords[index - FIRST_ADDRESS].machineCode, ARE);
+        char ARE = 0;
+        if (instructionWords[index].ARE == us_binary_to_int("001"))
+        {
+            ARE = 'E';
+        }
+        if (instructionWords[index].ARE == us_binary_to_int("010"))
+        {
+            ARE = 'R';
+        }
+        if (instructionWords[index].ARE == us_binary_to_int("100"))
+        {
+            ARE = 'A';
+        }
+
+        fprintf(f, "%d %04X %c\n", index + getNumberOfCW() + FIRST_ADDRESS, instructionWords[index].machineCode, ARE);
         return 1;
     }
     return ERROR;
