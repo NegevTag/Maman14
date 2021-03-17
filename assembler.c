@@ -70,7 +70,7 @@ void process(FILE *f, char *fileName)
         /* if the second word is instruction read it and move to the next line*/
         if (secondWord[0] == INSTRUCTION_SPECIFIER)
         {
-            readInstruction(secondWord, current, line, lineNum, &error);
+            readInstruction(secondWord, afterWord, line, lineNum, &error);
             continue;
         }
         /* if the second word is not instruction it is command, read it and move to the next line*/
@@ -207,7 +207,7 @@ static void readStringInstruction(char *line, char *instruction, int afterInstru
     param = readWordParam(line, &current, lineNum, &currentError, 0);
     if (!currentError)
     {
-        addEInstruction(instruction, param, lineNum, error);
+        addStringInstruction(instruction, param, lineNum, error);
     }
     else
     {
