@@ -43,7 +43,7 @@ void addCommand(char *commandName, char *param1, char *param2, int lineNum, int 
             (*error) = ERROR;
             return;
         }
-        handleParam(0, param2, commandAdress, thisCom.possibleInAddressing, lineNum, &currentError);
+        handleParam(0, param2, commandAdress, thisCom.possibleOutAddressing, lineNum, &currentError);
     }
     /*if there is only one parameter it is output parameter*/
     else
@@ -210,7 +210,7 @@ static int checkIfRelative(char *param)
 /*checking if the parameter is in the register direct addressing format*/
 static int checkIfRegisterDirect(char *param)
 {
-    return strlen(param) == 2 && param[0] == 'r' && (param[1] - '0') >= 0 && param[1] <= MAX_REGISTER;
+    return strlen(param) == 2 && param[0] == 'r' && (param[1] - '0') >= 0 && (param[1]-'0') <= MAX_REGISTER;
 }
 /*checking if the parameter is in the direct addressing format*/
 static int checkIfDirect(char *param)
@@ -239,7 +239,8 @@ static void handleImmidiate(char *param, int lineNum, int *error)
  assuming that it is direct parameter*/
 static void handleRelative(char *param, int lineNum, int *error)
 {
-    addLabelParam(param, 0, lineNum);
+    char * labelParam = subString(1,strlen(param),param);
+    addLabelParam(labelParam, 0, lineNum);
 }
 /*handle register direct parameter, by adding it to the commandWordList if everything is ok , assuming that it is register direct parameter*/
 static void handleRegisterDirect(char *param, int lineNum, int *error)

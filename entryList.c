@@ -30,7 +30,7 @@ int getNumberOfEntries()
 {
     return entryIndex;
 }
-/*return the label of the entry in the index, return '\0' if it is out of range*/
+/*return the label of the entry in the index, return NULL if it is out of range*/
 char *getEntryLabel(int index, int *lineNum)
 {
     if (index >= 0 && index < entryIndex)
@@ -38,8 +38,5 @@ char *getEntryLabel(int index, int *lineNum)
         *lineNum = entryList[index].lineNum;
         return entryList[index].label;
     }
-    else
-    {
-        return "\0";
-    }
+    return NULL;
 }

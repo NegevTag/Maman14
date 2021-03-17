@@ -19,7 +19,7 @@ void updateEntryInstructions(char *fileName, int *error)
         return;
     }
     /*make all entry label entry and add them to the list*/
-    while ((entryLabel = getEntryLabel(i, &lineNum)) != '\0')
+    while ((entryLabel = getEntryLabel(i, &lineNum)) != NULL)
     {
         entryLabelAddress = setEntry(entryLabel, lineNum, error);
         if ((*error) != ERROR)
@@ -28,6 +28,7 @@ void updateEntryInstructions(char *fileName, int *error)
             fprintf(f, "%s %d", entryLabel, entryLabelAddress);
             emptyFile = 0;
         }
+        i++;
     }
     fclose(f);
     /*if error accrued or the file is empty delete the file*/
@@ -77,7 +78,7 @@ void addEInstruction(char *instruction, char *param, int lineNum, int *error)
         }
         else
         {
-            addEntry(instruction, lineNum);
+            addEntry(param, lineNum);
         }
     }
     /*if the instruction is not valid print error*/
