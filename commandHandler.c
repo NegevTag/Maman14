@@ -48,7 +48,7 @@ void addCommand(char *commandName, char *param1, char *param2, int lineNum, int 
     /*if there is only one parameter it is output parameter*/
     else
     {
-        handleParam(0, param1, commandAdress, thisCom.possibleInAddressing, lineNum, &currentError);
+        handleParam(0, param1, commandAdress, thisCom.possibleOutAddressing, lineNum, &currentError);
     }
 }
 /*update all the commands that wasent completed in iteration 1, and filling .ext file and .ob file*/
