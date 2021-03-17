@@ -29,7 +29,7 @@ void updateEntryInstructions(char *fileName, int *error)
         if ((*error) != ERROR)
         {
             /*add the entry label to the file*/
-            fprintf(f, "%s %d\n", entryLabel, entryLabelAddress);
+            fprintf(f, "%s %04d\n", entryLabel, entryLabelAddress);
             emptyFile = 0;
         }
         i++;

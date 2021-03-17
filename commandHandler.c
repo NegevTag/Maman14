@@ -84,7 +84,7 @@ void updateCommands(char *fileName, int *error)
     {
         /*if line with label param reached update the command word to the label adress *
         and if it is extrnal add it to the extrnal list and change to E in ARE*/
-        if (!reachedEnd && nextLabelParam.codeAddress == i + FIRST_ADDRESS)
+        if (!reachedEnd && nextLabelParam.codeParamAddress == i + FIRST_ADDRESS)
         {
             int labelAdress;
             labelAdress = getLabelAddress(nextLabelParam.name, &external, nextLabelParam.lineNum, error);
@@ -92,15 +92,15 @@ void updateCommands(char *fileName, int *error)
             /* if the variable is external add it to the ext file and change to E*/
             if (external)
             {
-                changeCWToExternal(nextLabelParam.codeAddress);
+                changeCWToExternal(nextLabelParam.codeParamAddress);
                 extEmpty = 0;
                 if (*error != ERROR)
                 {
-                    fprintf(ext, "%s %d\n", nextLabelParam.name, nextLabelParam.codeAddress);
+                    fprintf(ext, "%s %04d\n", nextLabelParam.name, nextLabelParam.codeParamAddress);
                 }
             }
             /*set the machine code of the word that represent the parameter to the parameter address */
-            setCWMachineCode(labelAdress, nextLabelParam.codeAddress);
+            setCWMachineCode(nextLabelParam.codeParamAddress, labelAdress);
             nextLabelParam = getNextLabelParam(&reachedEnd);
         }
         if (*error != ERROR)
@@ -191,7 +191,7 @@ static void handleParam(int isInputParam, char *param, int commandWordAddress, i
         if (checkIfDirect(param))
         {
 
-            unsigned int mask = 3;
+            unsigned int mask = 1;
             /*if it is in param move it 2 to the left*/
             if (isInputParam)
             {

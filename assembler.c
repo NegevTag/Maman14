@@ -225,7 +225,7 @@ static void readCommand(char *line, char *command, int afterCommand, int lineNum
     int afterWord;
     int currentError = 0;
     /*making the temporary instruction parmenant becuase it will be used*/
-    makeTempLabelPermanent(getNumberOfIW(), 0, 0, 0);
+    makeTempLabelPermanent(getNextCWAddress(), 0, 0, 0);
     /*reading the command first parameter*/
     current = skipTabsAndSpaces(afterCommand, line);
     afterComma = skipComma(current, line);

@@ -36,7 +36,7 @@ int addIWRepresentativeStringToFile(FILE *f, int index)
             ARE = 'A';
         }
 
-        fprintf(f, "%d %03X %c\n", index + getNumberOfCW() + FIRST_ADDRESS, instructionWords[index].machineCode, ARE);
+        fprintf(f, "%04d %03X %c\n", index + getNumberOfCW() + FIRST_ADDRESS, instructionWords[index].machineCode, ARE);
         return 1;
     }
     return ERROR;

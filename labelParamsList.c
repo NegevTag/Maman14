@@ -14,7 +14,7 @@ int addLabelParam(char *name, int direct, int lineNum)
 {
     labelParamsList = (struct labelParam *)myRealloc(labelParamsList, (lastIndex + 2) * sizeof(struct labelParam));
     labelParamsList[lastIndex].name = name;
-    labelParamsList[lastIndex].codeAddress = getNextCWAddress();
+    labelParamsList[lastIndex].codeParamAddress = getNextCWAddress();
     labelParamsList[lastIndex].direct = direct;
     labelParamsList[lastIndex].lineNum = lineNum;
     lastIndex++;
