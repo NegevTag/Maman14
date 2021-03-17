@@ -116,6 +116,17 @@ commandWordAddress is the address of theword that represent the command which th
 static void handleParam(int isInputParam, char *param, int commandWordAddress, int possibleAddressing, int lineNum, int *error)
 {
     int machineCode = getCWMachineCode(commandWordAddress);
+    /*if the command should not receive any parameters check that the parameter is empty */
+    if (possibleAddressing == 0)
+    {
+        if (strlen(param)!=0)
+        {
+            printf("Error:line %d, command should not receive any parameters \n",lineNum);
+            (*error) =ERROR;
+        }
+        return;
+        
+    }
     /*if it could be in immidiate addressing*/
     if (us_binary_to_int("0001") & possibleAddressing)
     {
@@ -181,6 +192,8 @@ static void handleParam(int isInputParam, char *param, int commandWordAddress, i
             return;
         }
     }
+    
+    
     printf("Error: line %d, parameter is not valid\n", lineNum);
     (*error) = ERROR;
 }
