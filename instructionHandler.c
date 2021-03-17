@@ -69,7 +69,7 @@ void addEInstruction(char *instruction, char *param, int lineNum, int *error)
     /*if instruction is entry add the param to to enterylist*/
     else if (strcmp(instruction, ".entry") == 0)
     {
-        if (!isValidLabel(param, 0,1))
+        if (!isValidLabel(param, 0, 1))
         {
             printf("Error: line %d, invalid label\n", lineNum);
             (*error) = ERROR;
@@ -102,16 +102,13 @@ void addDataInstruction(char *instruction, int params[], int numberOfParams, int
     /*checking that the parameters are correct*/
     for (i = 0; i < numberOfParams; i++)
     {
-        if (isValidNumber(params[i]))
+        if (!isValidNumber(params[i]))
         {
             printf("Error: line %d, number is out of limits\n", lineNum);
             (*error) = ERROR;
             return;
         }
-        else
-        {
-            addWordNumber(params[i]);
-        }
+        addWordNumber(params[i]);
     }
 }
 /* add the string instruction (and checking that it is string instruction)*/

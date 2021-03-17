@@ -143,7 +143,7 @@ static void readEInstruction(char *line, char *instruction, int afterInstruction
 static void readDataInstruction(char *line, char *instruction, int afterInstruction, int lineNum, int *error)
 {
     int params[MAX_LINE_LENGTH];
-    int numberOfParams = 1;
+    int paramIndex = 0;
     char *paramString;
     int paramInt;
     int current = afterInstruction;
@@ -155,7 +155,8 @@ static void readDataInstruction(char *line, char *instruction, int afterInstruct
     while (!checkEndOfLine(current, line))
     {
         current = skipTabsAndSpaces(current, line);
-        /*if the comma was the last character the program was already exit the loop because find comma stop at the end of the line.
+        /*if the comma was the last character  - the program was already exit the loop.
+        Because findComma stop at the end of the line.
         So when after skipping tabs and spaces end of the line reached but it wasent reached before tabs end spaces
         indicate that ther is extraneous comma after the commandList*/
         if (checkEndOfLine(current, line))
@@ -179,9 +180,9 @@ static void readDataInstruction(char *line, char *instruction, int afterInstruct
                 return;
             }
         }
-        params[numberOfParams] = paramInt;
+        params[paramIndex] = paramInt;
         current = afterWord;
-        numberOfParams++;
+        paramIndex++;
     }
     /*there is an edge case in which the end of the line comes right after the comma in which the loop will not notice that*/
     if (line[current - 1] == ',')
@@ -190,7 +191,7 @@ static void readDataInstruction(char *line, char *instruction, int afterInstruct
         (*error) = ERROR;
         return;
     }
-    addDataInstruction(instruction, params, numberOfParams, lineNum, error);
+    addDataInstruction(instruction, params, paramIndex, lineNum, error);
 }
 
 /* read string instruction - calculate the parameters and let instructions handler to handle it, 
@@ -268,7 +269,7 @@ static int skipWord(int current, char str[])
     return current;
 }
 
-/*return the first index after comma or the last characterOf theLine*/
+/*return the first index after comma or the last character of the line*/
 static int skipComma(int current, char str[])
 {
     while (str[current] != ',' && !checkEndOfLine(current, str))
