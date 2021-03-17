@@ -67,6 +67,15 @@ int changeCWToExternal(int address)
     }
     return 0;
 }
+/*change command word ARE to A return 1 if worked and error if not*/
+int changeCWToAbsolute(int address){
+    if (isValidAddress(address))
+    {
+        commandWordList[address - FIRST_ADDRESS].ARE = us_binary_to_int("100");
+        return 1;
+    }
+    return 0;
+}
 /*get the representative string of the command by the output file format, return ERROR if not valid */
 int addCWRepresentativeStringToFile(FILE *f, int address)
 {

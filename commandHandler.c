@@ -99,8 +99,15 @@ void updateCommands(char *fileName, int *error)
                     fprintf(ext, "%s %04d\n", nextLabelParam.name, nextLabelParam.codeParamAddress);
                 }
             }
-            /*set the machine code of the word that represent the parameter to the parameter address */
-            setCWMachineCode(nextLabelParam.codeParamAddress, labelAdress);
+            /*set the machine code of the word that represent the parameter to the parameter address if it is direct */
+            if (nextLabelParam.direct)
+            {
+                setCWMachineCode(nextLabelParam.codeParamAddress, labelAdress);
+            }else{
+                setCWMachineCode(nextLabelParam.codeParamAddress,  labelAdress-nextLabelParam.codeParamAddress);
+                changeCWToAbsolute(nextLabelParam.codeParamAddress);
+            }
+            
             nextLabelParam = getNextLabelParam(&reachedEnd);
         }
         if (*error != ERROR)
