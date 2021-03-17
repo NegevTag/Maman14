@@ -69,7 +69,7 @@ void addEInstruction(char *instruction, char *param, int lineNum, int *error)
     /*if instruction is entry add the param to to enterylist*/
     else if (strcmp(instruction, ".entry") == 0)
     {
-        if (!isValidLabel(param, 0))
+        if (!isValidLabel(param, 0,1))
         {
             printf("Error: line %d, invalid label\n", lineNum);
             (*error) = ERROR;

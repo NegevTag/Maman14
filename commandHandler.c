@@ -202,7 +202,7 @@ static int checkIfRegisterDirect(char *param)
 /*checking if the parameter is in the direct addressing format*/
 static int checkIfDirect(char *param)
 {
-    return isValidLabel(param, 0);
+    return isValidLabel(param, 0,1);
 }
 
 /*handle immidiate parameter, by adding it to the commandWordList if everything is ok , assuming that it is immidiate parameter*/

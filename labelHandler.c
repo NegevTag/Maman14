@@ -23,7 +23,7 @@ void initializelabelList()
 }
 
 /*return true if string is a valid label*/
-int isValidLabel(char *label, int withColon)
+int isValidLabel(char *label, int withColon,int okIfAlreadyDefined)
 {
     char *pureLabel = label;
     /* empty label is not valid*/
@@ -55,7 +55,11 @@ int isValidLabel(char *label, int withColon)
     {
         return 0;
     }
-    /*return 1 if the label isnt already defined*/
+    /*if it is ok i*s already defind return true else check if it is already defind*/
+    if (okIfAlreadyDefined)
+    {
+        return 1;
+    }
     return !isDefinedLabel(pureLabel);
 }
 /*return if string is defined label*/
@@ -74,7 +78,7 @@ int isDefinedLabel(char *purelabel)
 /*add label to the label list, if it is not valid change error to ERROR*/
 void addLabel(char *label, int withColon, int address, int data, int external, int entry, int lineNum, int *error)
 {
-    if (!isValidLabel(label, withColon))
+    if (!isValidLabel(label, withColon,0))
     {
         printf("Error:line %d, label is not valid\n", lineNum);
         (*error) = ERROR;
@@ -100,7 +104,7 @@ void addLabel(char *label, int withColon, int address, int data, int external, i
 /*add temporary label, will be overwritten by the next call*/
 void addTempLabel(char *label, int lineNum, int *error, int withColon)
 {
-    if (!isValidLabel(label, withColon))
+    if (!isValidLabel(label, withColon,0))
     {
         (*error) = ERROR;
         return;
