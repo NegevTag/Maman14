@@ -9,7 +9,11 @@ struct wordInstruction
 };
 
 static struct wordInstruction instructionWords[MEMORY_SIZE];
-static int instructionWordsCounter = 0;
+static int instructionWordsCounter;
+
+void initializeIWList(){
+    instructionWordsCounter = 0;
+}
 /*adding word by adress and machineCode and ARE*/
 void addWord(int machineCode, int ARE)
 {

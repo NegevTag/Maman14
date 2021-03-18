@@ -25,6 +25,8 @@ int main(int argc, char *argv[])
             initializeLabelParamsList();
             initializeEntryList();
             initializelabelList();
+            initializeCWList();
+            initializeIWList();
             strcpy(asFileName, argv[i]);
             strcat(asFileName,".as");
             f = fopen(asFileName, "rt");

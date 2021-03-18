@@ -12,9 +12,13 @@ struct wordCommand
     unsigned int ARE : 3; /* 001 for E, 010 for R, 100 for A*/
 };
 
-static int commandWordsCounter = 0;
+static int commandWordsCounter;
 
 static struct wordCommand commandWordList[MEMORY_SIZE];
+
+void initializeCWList(){
+    commandWordsCounter = 0;
+}
 /*add command word to the command word list, return ERROR if error occurred*/
 int addCW(int machineCode, int ARE)
 {

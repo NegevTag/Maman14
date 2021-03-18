@@ -164,7 +164,7 @@ int setEntry(char *label, int lineNum, int *error)
             /*internal lablel cant be external*/
             if (labelList[i].external == 1)
             {
-                printf("Error, line %d, label cannot be external and entry", lineNum);
+                printf("Error, line %d, label cannot be external and entry\n", lineNum);
                 (*error) = ERROR;
                 return ERROR;
             }
