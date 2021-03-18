@@ -1,6 +1,8 @@
 ; file ps.as
-.entry LIST
+;output should be error in line 4
 .extern W
+.extern W
+.entry LIST
 MAIN: add r3, LIST
 LOOP: prn #48
  lea W, r6

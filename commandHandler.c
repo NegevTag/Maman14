@@ -88,7 +88,13 @@ void updateCommands(char *fileName, int *error)
         {
             int labelAdress;
             labelAdress = getLabelAddress(nextLabelParam.name, &external, nextLabelParam.lineNum, error);
-
+            /*checking that the paramter is not extrnal and relative*/
+            if (external && !nextLabelParam.direct)
+            {
+                printf("Error:line %d, cannot use relative label address for external variable",nextLabelParam.lineNum);
+                (*error) = ERROR;
+                continue;
+            }
             /* if the variable is external add it to the ext file and change to E*/
             if (external)
             {
@@ -99,14 +105,17 @@ void updateCommands(char *fileName, int *error)
                     fprintf(ext, "%s %04d\n", nextLabelParam.name, nextLabelParam.codeParamAddress);
                 }
             }
-            /*set the machine code of the word that represent the parameter to the parameter address if it is direct */
+            /*if it is direct addressing set the machine code of the word that represent the parameter to the parameter address  */
             if (nextLabelParam.direct)
             {
                 setCWMachineCode(nextLabelParam.codeParamAddress, labelAdress);
-            }else{
-                setCWMachineCode(nextLabelParam.codeParamAddress,  labelAdress-nextLabelParam.codeParamAddress);
+            /*if it is relative addressing set the machine code of the word that represent the difference */
             }
-            
+            else
+            {
+                setCWMachineCode(nextLabelParam.codeParamAddress, labelAdress - nextLabelParam.codeParamAddress);
+            }
+
             nextLabelParam = getNextLabelParam(&reachedEnd);
         }
         if (*error != ERROR)
