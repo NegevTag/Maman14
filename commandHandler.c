@@ -134,13 +134,8 @@ void updateCommands(char *fileName, int *error)
     }
     fclose(ob);
     fclose(ext);
-    /*if error occurred deletd file*/
-    if ((*error == ERROR))
-    {
-        remove(extName);
-        remove(obName);
-    }
-    else if (extEmpty)
+    /*if file is empty remove it*/
+     if (extEmpty)
     {
         remove(extName);
     }

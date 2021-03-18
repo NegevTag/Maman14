@@ -14,7 +14,7 @@ void updateEntryInstructions(char *fileName, int *error)
     char enName[MAX_FILE_NAME_LENGTH + 4];
     FILE *f;
     strcpy(enName, fileName);
-    strcat(enName,".ent");
+    strcat(enName, ".ent");
     f = fopen(enName, "wt");
     if (!f)
     {
@@ -35,8 +35,8 @@ void updateEntryInstructions(char *fileName, int *error)
         i++;
     }
     fclose(f);
-    /*if error accrued or the file is empty delete the file*/
-    if ((*error) == ERROR || emptyFile)
+    /*if file is empty delete the file*/
+    if (emptyFile)
     {
         remove(enName);
     }
@@ -44,25 +44,29 @@ void updateEntryInstructions(char *fileName, int *error)
 /*append instruction to the output file*/
 void appendInstructionToOutput(char *fileName, int *error)
 {
-    int i;
-    char obName[MAX_FILE_NAME_LENGTH + 3];
-    FILE *ob;
-    strcpy(obName,fileName);
-    strcat(obName,".ob");
-    ob = fopen(obName, "at");
-    if ((*error) != ERROR)
+    if (*error != ERROR)
     {
 
-        if (!ob)
-        {
-            printf("Error: could not open file\n");
-            (*error) = ERROR;
-            return;
-        }
-        for (i = 0; i < getNumberOfIW(); i++)
+        int i;
+        char obName[MAX_FILE_NAME_LENGTH + 3];
+        FILE *ob;
+        strcpy(obName, fileName);
+        strcat(obName, ".ob");
+        ob = fopen(obName, "at");
+        if ((*error) != ERROR)
         {
 
-            addIWRepresentativeStringToFile(ob, i);
+            if (!ob)
+            {
+                printf("Error: could not open file\n");
+                (*error) = ERROR;
+                return;
+            }
+            for (i = 0; i < getNumberOfIW(); i++)
+            {
+
+                addIWRepresentativeStringToFile(ob, i);
+            }
         }
     }
 }
@@ -73,7 +77,7 @@ void addEInstruction(char *instruction, char *param, int lineNum, int *error)
     /*if instruction is extern add param to labels*/
     if (strcmp(instruction, ".extern") == 0)
     {
-        addLabel(param, 0, 0, 1, 1, 0,1, lineNum, error);
+        addLabel(param, 0, 0, 1, 1, 0, 1, lineNum, error);
         return;
     }
     /*if instruction is entry add the param to to enterylist*/
@@ -92,7 +96,6 @@ void addEInstruction(char *instruction, char *param, int lineNum, int *error)
             {
                 /*TODO: decide what to do by the answer in the forum (twice entry)*/
             }
-            
         }
     }
     /*if the instruction is not valid print error*/

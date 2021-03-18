@@ -93,6 +93,23 @@ void process(FILE *f, char *fileName)
         /*not checking if error occurred becuase even if error occurred other errorors should be reported*/
         updateCommands(fileName, &error);
         appendInstructionToOutput(fileName, &error);
+        /* if error occurred remove all files*/
+        if (error == ERROR)
+        {
+            char extName[MAX_FILE_NAME_LENGTH + 4];
+            char enName[MAX_FILE_NAME_LENGTH + 4];
+            char obName[MAX_FILE_NAME_LENGTH + 3];
+            strcpy(extName, fileName);
+            strcpy(enName, fileName);
+            strcpy(obName, fileName);
+            strcat(extName, ".ext");
+            strcat(enName, ".ent");
+            strcat(obName, ".ob");
+            remove(extName);
+            remove(enName);
+            remove(obName);
+            
+        }
     }
 }
 /*read instruction by letting readEInstruction or readAllocationInstruction to handle it */
