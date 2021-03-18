@@ -11,14 +11,16 @@ struct label
     unsigned int lineNum;
 };
 struct label *labelList;
-int labelsCounter = 0;
-int tempLabelExists = 0;
+int labelsCounter;
+int tempLabelExists;
 char *tempLabelLabel;
 int tempLabellineNum;
 int tempLabelWithColon;
 /*initialize the entryList*/
 void initializelabelList()
 {
+    labelsCounter = 0;
+    tempLabelExists = 0;
     labelList = (struct label *)myMalloc(sizeof(struct label));
 }
 

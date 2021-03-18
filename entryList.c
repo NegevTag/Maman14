@@ -8,7 +8,7 @@ struct entry
 };
 
 static struct entry(*entryList);
-static int entryIndex = 0;
+static int entryIndex;
 /*add entry to the entry list*/
 void addEntry(char *label, int lineNum)
 {
@@ -24,6 +24,7 @@ void addEntry(char *label, int lineNum)
 void initializeEntryList()
 {
     entryList = (struct entry *)(myMalloc(sizeof(struct entry)));
+    entryIndex = 0;
 }
 /*get the number of entry variables*/
 int getNumberOfEntries()

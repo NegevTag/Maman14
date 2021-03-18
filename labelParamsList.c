@@ -6,9 +6,9 @@
 /*the list of the labels paramter*/
 static struct labelParam *labelParamsList;
 
-static int lastIndex = 0;
+static int lastIndex;
 
-static int firstIndex = 0;
+static int firstIndex;
 /*add the paramter to the parm label list and add empty commandWord that will represent the paramterafter iteration2, return ERROR if error occurred**/
 int addLabelParam(char *name, int direct, int lineNum)
 {
@@ -30,6 +30,8 @@ int addLabelParam(char *name, int direct, int lineNum)
 /*initialize the entryList*/
 void initializeLabelParamsList()
 {
+    lastIndex =0;
+    firstIndex = 0;
     labelParamsList = (struct labelParam *)(myMalloc(sizeof(struct labelParam)));
 }
 /*get the next label parameter, if reached end *reachedEnd will be 1 and trash value will be return*/
