@@ -1,4 +1,5 @@
-;output should be error in line14 and line 12
+;checking relative addresing to extern variable
+;output should be error in line14 and line 13
 .entry LIST
 .extern W
 MAIN: add r3, LIST

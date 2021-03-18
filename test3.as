@@ -1,4 +1,4 @@
-    ; file ps.as
+    ; checking file with alot of whitespace and blank lines
         ;output should be same as correctOutput
 
 

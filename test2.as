@@ -1,5 +1,5 @@
-; file ps.as
-        ;output should be same as correctOutput
+; checking file with change in the instruction order
+;output should be same as correctOutput
 MAIN: add r3, LIST
 LOOP: prn #48
  lea W, r6

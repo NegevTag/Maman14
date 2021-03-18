@@ -1,4 +1,4 @@
-; file ps.as
+; checking making variable extern twice
 ;output should be error in line 4
 .extern W
 .extern W

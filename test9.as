@@ -1,7 +1,7 @@
-; file ps.as
-;output should be  errors in lines 19 and 20
-.entry LIST
-.extern W
+; checking instructions without parameters
+;output should be  errors in lines 3 and 4 and 19 and 20
+.entry
+.extern 
 MAIN: add r3, LIST
 LOOP: prn #48
  lea W, r6

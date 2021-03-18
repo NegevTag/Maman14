@@ -108,6 +108,7 @@ void addTempLabel(char *label, int lineNum, int *error, int withColon)
 {
     if (!isValidLabel(label, withColon,0))
     {
+        printf("Error:line %d, label is not valid\n", lineNum);
         (*error) = ERROR;
         return;
     }

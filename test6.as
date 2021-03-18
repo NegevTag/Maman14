@@ -1,5 +1,5 @@
-; file ps.as
-;output should show cannot make entry parmater extrnal
+; checking making extern variable entry
+;output should show error about labels
 .extern W
 .extern LIST
 .entry LIST
@@ -18,7 +18,6 @@ LOOP: prn #48
  add L3, L3
 END: stop
 STR: .string "abcd"
-LIST: .data 6, -9
  .data -100
 K: .data 31
 .extern L3 

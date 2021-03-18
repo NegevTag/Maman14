@@ -41,6 +41,10 @@ int min(int x, int y)
 {
     return x < y ? x : y;
 }
+int max(int x, int y)
+{
+    return x > y ? x : y;
+}
 /*allocate memory and exit if problem accrued*/
 void *myMalloc(int size)
 {

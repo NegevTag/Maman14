@@ -1,5 +1,5 @@
-; file ps.as
-;output should be error in line 5
+; checking making variable entry twice
+;not know yet what output should be
 .entry LIST
 .extern W
 .entry LIST

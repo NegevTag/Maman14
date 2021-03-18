@@ -1,4 +1,4 @@
-; file ps.as
+; checking regular file
 ;output should be same as correctOutput
 .entry LIST
 .extern W

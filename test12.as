@@ -1,4 +1,4 @@
-; file ps.as
+; checking problemtic labels names
 ;output should be same as correctOutput but labels name different
 .entry R2
 .extern r

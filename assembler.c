@@ -31,6 +31,11 @@ void process(FILE *f, char *fileName)
         {
             continue;
         }
+        /*if the line is emtpty contiue*/
+        if (checkEndOfLine(current, line))
+        {
+            continue;
+        }
         afterWord = skipWord(current, line);
         firstWord = subString(current, afterWord, line);
         /*if the first word is label check that is valid and save it as temp*/
@@ -181,7 +186,7 @@ static void readDataInstruction(char *line, char *instruction, int afterInstruct
             }
         }
         params[paramIndex] = paramInt;
-        current = afterWord;
+        current = afterComma;
         paramIndex++;
     }
     /*there is an edge case in which the end of the line comes right after the comma in which the loop will not notice that*/

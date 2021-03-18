@@ -1,4 +1,4 @@
-; file ps.as
+; checking externous comma after list
 ;output should be error in line 20
 .entry LIST
 .extern W
