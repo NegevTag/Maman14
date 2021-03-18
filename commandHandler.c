@@ -49,7 +49,15 @@ void addCommand(char *commandName, char *param1, char *param2, int lineNum, int 
     /*if there is only one parameter it is output parameter*/
     else
     {
-        handleParam(0, param1, commandAdress, thisCom.possibleOutAddressing, lineNum, &currentError);
+        /* check that the command can recive only one parameter and if it was suppused to have 2 print error*/
+        if (thisCom.possibleInAddressing == 0)
+        {
+            handleParam(0, param1, commandAdress, thisCom.possibleOutAddressing, lineNum, &currentError);
+        }else
+        {
+            printf("Error, line %d, not received inough paramters\n",lineNum);
+        }
+        
     }
 }
 /*update all the commands that wasent completed in iteration 1, and filling .ext file and .ob file*/
@@ -91,7 +99,7 @@ void updateCommands(char *fileName, int *error)
             /*checking that the paramter is not extrnal and relative*/
             if (external && !nextLabelParam.direct)
             {
-                printf("Error:line %d, cannot use relative label address for external variable",nextLabelParam.lineNum);
+                printf("Error:line %d, cannot use relative label address for external variable", nextLabelParam.lineNum);
                 (*error) = ERROR;
                 continue;
             }
@@ -109,7 +117,7 @@ void updateCommands(char *fileName, int *error)
             if (nextLabelParam.direct)
             {
                 setCWMachineCode(nextLabelParam.codeParamAddress, labelAdress);
-            /*if it is relative addressing set the machine code of the word that represent the difference */
+                /*if it is relative addressing set the machine code of the word that represent the difference */
             }
             else
             {

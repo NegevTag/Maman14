@@ -156,6 +156,13 @@ static void readDataInstruction(char *line, char *instruction, int afterInstruct
     int afterComma;
     /*making the temporary instruction parmenant becuase it will be used*/
     makeTempLabelPermanent(getNumberOfIW(), 1, 0, 0);
+    current = skipTabsAndSpaces(current, line);
+    if (checkEndOfLine(current, line))
+    {
+        printf("Error: line %d, No parameter was received\n", lineNum);
+        (*error) = ERROR;
+        return;
+    }
     /*add all parameters to the list*/
     while (!checkEndOfLine(current, line))
     {
@@ -300,7 +307,7 @@ static char *readWordParam(char *line, int *current, int lineNum, int *error, in
     int index = skipTabsAndSpaces(*current, line);
     if (checkEndOfLine(index, line))
     {
-        printf("Error: line %d, No argument was received\n", lineNum);
+        printf("Error: line %d, No parameter was received\n", lineNum);
         (*error) = ERROR;
         return NULL;
     }
