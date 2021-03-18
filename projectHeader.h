@@ -22,6 +22,7 @@
 /*transferring unsigned binary number shown as string to int*/
 int us_binary_to_int(char *binary);
 char *subString(int start, int end, char *str);
+int max(int x, int y);
 int min(int x, int y);
 void *myMalloc(int size);
 void *myRealloc(void *ptr, int size);

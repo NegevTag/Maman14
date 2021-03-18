@@ -1,4 +1,4 @@
-; file ps.as
+; checking invalid labels
 ;output should show errors in line 3 and 13 about invalid labels
  lea: add r3, LIST
 LOOP: prn #48

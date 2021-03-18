@@ -1,4 +1,5 @@
-;output should be error in line 19
+;checking numbers out of range
+;output should be error in line 20
 .entry LIST
 .extern W
 MAIN: add r3, LIST
