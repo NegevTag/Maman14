@@ -9,9 +9,12 @@ struct entry
 
 static struct entry(*entryList);
 static int entryIndex;
-/*add entry to the entry list*/
-void addEntry(char *label, int lineNum)
+static int isAlreadyInList(char *label);
+/*add entry to the entry list, return ERROR if accrued*/
+int addEntry(char *label, int lineNum)
 {
+    if (!isAlreadyInList(label))
+    {
     /*allocate new memory for the entryList*/
     entryList = (struct entry *)myRealloc(entryList, (entryIndex + 2) * sizeof(struct entry));
     /*add entry to the list*/
@@ -19,6 +22,9 @@ void addEntry(char *label, int lineNum)
     /*there is no need to allocate memory for the string because substring allocate memory*/
     entryList[entryIndex].label = label;
     entryIndex++;
+    return 1;
+    }
+    return ERROR;
 }
 /*initialize the entryList*/
 void initializeEntryList()
@@ -40,4 +46,16 @@ char *getEntryLabel(int index, int *lineNum)
         return entryList[index].label;
     }
     return NULL;
+}
+/*return true if the label is already in the list*/
+static int isAlreadyInList(char *label){
+    int i;
+    for (i = 0; i < entryIndex; i++)
+    {
+        if (strcmp(entryList[i].label, label) == 0)
+        {
+            return 1;
+        }
+    }
+    return 0;
 }

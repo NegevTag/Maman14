@@ -69,6 +69,7 @@ void appendInstructionToOutput(char *fileName, int *error)
 /*adding e instruction (entry or external) the instruction*/
 void addEInstruction(char *instruction, char *param, int lineNum, int *error)
 {
+    int entryAdded = 0;
     /*if instruction is extern add param to labels*/
     if (strcmp(instruction, ".extern") == 0)
     {
@@ -86,7 +87,12 @@ void addEInstruction(char *instruction, char *param, int lineNum, int *error)
         }
         else
         {
-            addEntry(param, lineNum);
+            entryAdded = addEntry(param, lineNum);
+            if (entryAdded == ERROR)
+            {
+                /*TODO: decide what to do by the answer in the forum (twice entry)*/
+            }
+            
         }
     }
     /*if the instruction is not valid print error*/
