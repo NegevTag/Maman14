@@ -16,12 +16,13 @@ void addCommand(char *commandName, char *param1, char *param2, int lineNum, int 
 {
     unsigned int machineCode = 0;
     int currentError = 0;
+    int commandExist;
     int commandAdress;
     /*the command that this word represent*/
     struct command thisCom;
     /*checking which command was recived, if command is not valid print error */
-    thisCom = getCommand(commandName, &currentError);
-    if (currentError == ERROR)
+    thisCom = getCommand(commandName, &commandExist);
+    if (commandExist == 0)
     {
         printf("Error:line %d, command name is not a valid\n", lineNum);
         (*error) = ERROR;
