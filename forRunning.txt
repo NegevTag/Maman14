@@ -1,4 +1,6 @@
-./prog test1 test2 test3 test4 test5 test6 test7 test8
-./prog  test9 test10 test11 test12 test13 test14 test15 test16
-gdb --args debugable test1 test2 test3 test4 test5 test6 test7 test8 
-gdb --args test9 test10 test11 test12 test13 test14 test15 test16
+./prog test1 test2 test3 test4 test5 test6 test7 test8 test9 test10 
+./prog  test11 test12 test13 test14 test15 test16 test17 test18 
+./prog test19
+gdb --args debugable test1 test2 test3 test4 test5 test6 test7 test8 test9 test10 
+gdb --args  debugable test11 test12 test13 test14 test15 test16 test17 test18
+gdb --args  debugable test19

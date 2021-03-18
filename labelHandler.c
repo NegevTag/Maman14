@@ -52,7 +52,11 @@ int isValidLabel(char *label, int withColon, int okIfAlreadyDefined)
     {
         return 0;
     }
-    /*return true if everything above was ok and the first char is letter*/
+    /*checking if the label is register*/
+    if(strlen(label) == 2 && label[0] == 'r' && (label[1] - '0') >= 0 && (label[1] - '0') <= MAX_REGISTER){
+        return 0;
+    }
+    /*check that the first char is letter*/
     if (!((pureLabel[0] <= 'z' && pureLabel[0] >= 'a') || (pureLabel[0] <= 'Z' && pureLabel[0] >= 'A')))
     {
         return 0;

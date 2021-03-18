@@ -99,7 +99,7 @@ void updateCommands(char *fileName, int *error)
             /*checking that the paramter is not extrnal and relative*/
             if (external && !nextLabelParam.direct)
             {
-                printf("Error:line %d, cannot use relative label address for external variable", nextLabelParam.lineNum);
+                printf("Error:line %d, cannot use relative label address for external variable\n", nextLabelParam.lineNum);
                 (*error) = ERROR;
                 continue;
             }
