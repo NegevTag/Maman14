@@ -55,4 +55,3 @@ void initializeLabelParamsList();
 void initializeEntryList();
 void initializelabelList();
 void process();
-int changeCWToAbsolute(int address);

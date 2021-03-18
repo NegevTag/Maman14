@@ -18,7 +18,14 @@ int addLabelParam(char *name, int direct, int lineNum)
     labelParamsList[lastIndex].direct = direct;
     labelParamsList[lastIndex].lineNum = lineNum;
     lastIndex++;
-    return addCW(0, us_binary_to_int("010"));
+    if (direct)
+    {
+        return addCW(0, us_binary_to_int("010"));
+    }else{
+        return addCW(0, us_binary_to_int("100"));
+    }
+    
+    
 }
 /*initialize the entryList*/
 void initializeLabelParamsList()

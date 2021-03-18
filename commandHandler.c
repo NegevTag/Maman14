@@ -105,7 +105,6 @@ void updateCommands(char *fileName, int *error)
                 setCWMachineCode(nextLabelParam.codeParamAddress, labelAdress);
             }else{
                 setCWMachineCode(nextLabelParam.codeParamAddress,  labelAdress-nextLabelParam.codeParamAddress);
-                changeCWToAbsolute(nextLabelParam.codeParamAddress);
             }
             
             nextLabelParam = getNextLabelParam(&reachedEnd);
