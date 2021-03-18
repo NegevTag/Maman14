@@ -1,5 +1,7 @@
-;checking space after %, no parameters for command only one paramter while should accept 2, invalid instruction and command name and externous text after end
-;error in line 16 9 10 7 15 21 6 5 17 20
+;checking space after %,
+;no parameters for command only one paramter while should accept 2,
+;invalid instruction and command name and externous text after end
+;error in line 18 11 12 9 17 23 8 7 19 22
 .entry LIST
 .extern W
 $MAIN: add r3, LIST

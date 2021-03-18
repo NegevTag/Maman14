@@ -1,5 +1,6 @@
-;checking relative addresing to extern variable
-;output should be error in line14 and line 13
+;checking relative addresing to extern variable and entry and
+;extern parameters invalid
+;output should be error in line15 and line 14 , line 25 line 26
 .entry LIST
 .extern W
 MAIN: add r3, LIST
@@ -21,3 +22,5 @@ LIST: .data 6, -9
  .data -100
 K: .data 31
 .extern L3 
+.extern r4
+.entry @s

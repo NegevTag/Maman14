@@ -35,7 +35,7 @@ void initializeCWList();
 void initializeIWList();
 int isValidLabel(char *label, int withColon,int okIfAlreadyDefined);
 int isDefinedLabel(char *purelabel);
-void addLabel(char *label, int withColon, int address, int data, int external, int entry, int lineNum, int *error);
+void addLabel(char *label, int withColon, int address, int data, int external, int entry, int isParam, int lineNum, int *error);
 void addTempLabel(char *label, int lineNum, int *error, int withColon);
 void removeTempLabel();
 void makeTempLabelPermanent(int address, int data, int external, int entry);

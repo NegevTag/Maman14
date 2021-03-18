@@ -1,4 +1,4 @@
-; checking files without spaces
+; checking files without spaces and 0 as paramter for data
 ;output should be same as correctOutput except the data instruction
 .entry LIST
 .extern W

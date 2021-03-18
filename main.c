@@ -36,7 +36,7 @@ int main(int argc, char *argv[])
             }
             else
             {
-                printf("process file %s \n",asFileName);
+                printf("\nprocess file %s \n",asFileName);
                 process(f, argv[i]);
                 fclose(f);
             }

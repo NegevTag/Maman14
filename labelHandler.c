@@ -25,7 +25,7 @@ void initializelabelList()
 }
 
 /*return true if string is a valid label*/
-int isValidLabel(char *label, int withColon,int okIfAlreadyDefined)
+int isValidLabel(char *label, int withColon, int okIfAlreadyDefined)
 {
     char *pureLabel = label;
     /* empty label is not valid*/
@@ -77,12 +77,18 @@ int isDefinedLabel(char *purelabel)
     }
     return 0;
 }
-/*add label to the label list, if it is not valid change error to ERROR*/
-void addLabel(char *label, int withColon, int address, int data, int external, int entry, int lineNum, int *error)
+/*add label to the label list, if it is not valid change error to ERROR, isParm - is the label parameter at this line (for error output)*/
+void addLabel(char *label, int withColon, int address, int data, int external, int entry, int isParam, int lineNum, int *error)
 {
-    if (!isValidLabel(label, withColon,0))
+    if (!isValidLabel(label, withColon, 0))
     {
-        printf("Error:line %d, label is not valid\n", lineNum);
+        if (isParam)
+        {
+            printf("Error:line %d, label param is not valid\n", lineNum);
+        }else
+        {
+            printf("Error:line %d, label is not valid\n", lineNum);
+        }
         (*error) = ERROR;
         return;
     }
@@ -103,10 +109,10 @@ void addLabel(char *label, int withColon, int address, int data, int external, i
         labelsCounter++;
     }
 }
-/*add temporary label, will be overwritten by the next call*/
+/*add temporary label assuming it is not parameter , will be overwritten by the next call*/
 void addTempLabel(char *label, int lineNum, int *error, int withColon)
 {
-    if (!isValidLabel(label, withColon,0))
+    if (!isValidLabel(label, withColon, 0))
     {
         printf("Error:line %d, label is not valid\n", lineNum);
         (*error) = ERROR;
@@ -132,7 +138,7 @@ void makeTempLabelPermanent(int address, int data, int external, int entry)
     int garbage2 = 0;
     if (tempLabelExists)
     {
-        addLabel(tempLabelLabel, tempLabelWithColon, address, data, external, entry, garbage1, &garbage2);
+        addLabel(tempLabelLabel, tempLabelWithColon, address, data, external, entry,0, garbage1, &garbage2);
         tempLabelExists = 0;
     }
 }

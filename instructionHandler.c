@@ -73,7 +73,7 @@ void addEInstruction(char *instruction, char *param, int lineNum, int *error)
     /*if instruction is extern add param to labels*/
     if (strcmp(instruction, ".extern") == 0)
     {
-        addLabel(param, 0, 0, 1, 1, 0, lineNum, error);
+        addLabel(param, 0, 0, 1, 1, 0,1, lineNum, error);
         return;
     }
     /*if instruction is entry add the param to to enterylist*/
@@ -81,7 +81,7 @@ void addEInstruction(char *instruction, char *param, int lineNum, int *error)
     {
         if (!isValidLabel(param, 0, 1))
         {
-            printf("Error: line %d, invalid label\n", lineNum);
+            printf("Error: line %d, invalid label parametr\n", lineNum);
             (*error) = ERROR;
             return;
         }
